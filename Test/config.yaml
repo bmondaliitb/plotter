@@ -1,0 +1,39 @@
+# Job block defines the overall style and so on
+Job:
+  job_name: "test"  # this is a folder name where the plots will be saved
+  file_path:  &file_path "output.root"  # this is the file where the histograms are stored
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "uT_cut_6"  # name of the sample
+    variable: "ZeeSelection/uT_finerT_cut6"  # this is the name of the histogram in the ROOT file
+    linecolor : 1  # color of the histogram
+    markerstyle: 0  # marker style
+    linestyle: 1  # line style
+    linewidth: 2
+    file_path: *file_path  # this is the file where the histogram is stored
+    #binning:
+  - name: "uT_cut_5"  # name of the sample
+    variable: "ZeeSelection/uT_finerT_cut5"  # this is the name of the histogram in the ROOT file
+    markerstyle: 0
+    linecolor: 2
+    linestyle: 1
+    linewidth: 2
+    file_path: *file_path  # this is the file where the histogram is stored
+    #binning:
+  - name: "uT_cut_4"  # name of the sample
+    variable: "ZeeSelection/uT_finerT_cut5"  # this is the name of the histogram in the ROOT file
+    linestyle: 1
+    linecolor: 3
+    markerstyle: 0
+    file_path: *file_path  # this is the file where the histogram is stored
+
+
+# Plot block defines how we want to plot the histograms
+Plot:
+  - name: "uT_finer"  # this is the name of the plot
+    samples: ["uT_cut_6","uT_cut_5"]#, "uT_cut_4"]  # these are the samples we want to plot
+    type: "overlay"  # overlay, stack, overlay_ratio, stack_ratio
+    x_label: "u_{T} [GeV]"  # x-axis label
+    y_label: "Events"  # y-axis label
+    x_range: [0, 150]  # x-axis range
