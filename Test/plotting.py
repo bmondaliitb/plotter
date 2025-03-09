@@ -2,7 +2,6 @@ import os
 from sample import Sample
 from plot import Plot
 from plotter import presets
-from plotter.presets import Preset
 from plotter import atlas
 
 class Plotting:
@@ -15,53 +14,49 @@ class Plotting:
         self.samples = self._create_samples(self.sample_configs)
         self.plots = self._create_plots()
 
-    def _create_preset(self, sample_config):
-        return Preset(
-            fillcolor=sample_config.get('fillcolor', 0),
-            fillstyle=sample_config.get('fillstyle', 1001),
-            linecolor=sample_config.get('linecolor', 1),
-            linewidth=sample_config.get('linewidth', 1),
-            markersize=sample_config.get('markersize', 1),
-            markerstyle=sample_config.get('markerstyle', 20),
-            linestyle=sample_config.get('linestyle', 1)
-        )
     def _create_samples(self, sample_configs):
         samples = []
         for sample_config in sample_configs:
-            preset = self._create_preset(sample_config)
-            sample_obj = Sample(sample_config, preset)
+            sample_obj = Sample(sample_config)
             samples.append(sample_obj)
         return samples
 
     def _create_plots(self):
         plots = []
-        for plot in self.plot_configs:
-            plot_obj = Plot(plot)
+        for plot_config in self.plot_configs:
+            plot_obj = Plot(plot_config)
             plots.append(plot_obj)
         return plots
 
-
     def plot_overlay(self):
-        comparison_plot = presets.Comparison(self.plots[0].name, self.plots[0].x_label, "Events")
 
-        histo_list = []
         for plot in self.plots:
+            comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label)
+            histo_list = []
             for sample in self.samples:
-                if sample.name not in plot.samples:
-                    continue
-                hist = sample.hist
-                histo_list.append(hist)
+                for plot_sample in plot.samples:
+                    if sample.name == plot_sample["name"]:
+                        self.apply_style(sample.hist, plot_sample)
+                        histo_list.append(sample.hist)
 
-        comparison_plot.add_and_plot(histo_list)
-        comparison_plot.canvas.cd()
-        atlas.ATLASLabel(0.22, 0.9, "Internal")
-        # Save the plot
-        if not os.path.exists(self.job_config['job_name']):
-            os.makedirs(self.job_config['job_name'])
+            comparison_plot.mainPad.drawoption = "hist E"
+            #comparison_plot.ratioPad.drawoptions = "hist"
+            comparison_plot.add_and_plot(histo_list)
+            comparison_plot.canvas.cd()
+            atlas.ATLASLabel(0.22, 0.9, "Internal")
+            # Save the plot
+            if not os.path.exists(self.job_config['job_name']):
+                os.makedirs(self.job_config['job_name'])
+            # if x_range is set, use it
+            if plot.x_range:
+                comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
+            comparison_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
 
-        comparison_plot.set_xrange(self.plots[0].x_range[0], self.plots[0].x_range[1])
-        comparison_plot.save(f"{self.job_config['job_name']}/{self.plots[0].name}.pdf")
-
+    def apply_style(self, hist, style_config):
+        hist.SetLineColor(style_config.get('linecolor', 1))
+        hist.SetLineStyle(style_config.get('linestyle', 1))
+        hist.SetLineWidth(style_config.get('linewidth', 1))
+        hist.SetMarkerStyle(style_config.get('markerstyle', 20))
 
     def generate_plots(self):
         """Generate all plots based on the configuration."""
