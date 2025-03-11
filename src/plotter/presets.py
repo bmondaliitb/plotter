@@ -1,6 +1,7 @@
 from .canvas import canvas
 from .pad import pad
 from .histo import histo
+from .histo import histo2D
 from . import loader
 from .legend import legend
 
@@ -381,6 +382,44 @@ class Comparison:
     def logx(self, doLog=True):
         self.mainPad.logx(doLog)
         self.ratioPad.logx(doLog)
+
+    def save(self, plotName: str, verbose=False):
+        self.canvas.save(plotName, verbose)
+
+# class for plotting th2 histograms
+class SimpleTH2:
+    def __init__(self, plotName: str = "", xTitle: Optional[str] = None, yTitle: Optional[str] = None):
+        self.canvas = canvas(plotName)
+        self.mainPad = pad("main", configPath=loader.path() + "configs/pad.json")
+        self.canvas.add_pad(self.mainPad)
+        self.mainPad.set_title(xTitle, yTitle)
+
+    def add_and_plot(self, h: histo2D):
+        self.mainPad.add_histo(h)
+        self.mainPad.plot_histos()
+        self.set_margins() # the margins can be hardcoded in the configs/pad.json file
+
+    def set_xrange(self, min, max):
+        self.mainPad.set_xrange(min, max)
+
+    def set_yrange(self, min, max):
+        self.mainPad.set_yrange(min, max)
+
+    def set_zrange(self, min, max):
+        self.mainPad.set_zrange(min, max)
+
+    def logx(self, doLog=True):
+        self.mainPad.logx(doLog)
+
+    def logy(self, doLog=True):
+        self.mainPad.logy(doLog)
+
+    # set pad margins
+    def set_margins(self, left: float = 0.15, right: float = 0.15, down: float = 0.15, up: float = 0.15):
+        self.mainPad.margins(left, right, down, up)
+
+    # set color range for the histogram
+
 
     def save(self, plotName: str, verbose=False):
         self.canvas.save(plotName, verbose)

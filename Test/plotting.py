@@ -28,9 +28,8 @@ class Plotting:
             plots.append(plot_obj)
         return plots
 
-    def plot_overlay(self):
-
-        for plot in self.plots:
+    def plot_overlay(self, plots_overlay):
+        for plot in plots_overlay:
             comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label)
             histo_list = []
             for sample in self.samples:
@@ -52,6 +51,28 @@ class Plotting:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             comparison_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
 
+    def plot_simple_th2(self, plots_th2):
+        for plot in plots_th2:
+            simpleTH2_plot = presets.SimpleTH2(plot.name, plot.x_label, plot.y_label)
+            histogram = None
+            for sample in self.samples:
+                for plot_sample in plot.samples:
+                    if sample.name == plot_sample["name"]:
+                        histogram = sample.hist
+            simpleTH2_plot.mainPad.drawoption = "colz"
+            simpleTH2_plot.add_and_plot(histogram)
+            if plot.x_range:
+                simpleTH2_plot.set_xrange(plot.x_range[0], plot.x_range[1])
+            if plot.y_range:
+                simpleTH2_plot.set_yrange(plot.y_range[0], plot.y_range[1])
+
+            simpleTH2_plot.set_zrange(0, 100) # hardcoded for now
+
+            simpleTH2_plot.canvas.cd()
+            atlas.ATLASLabel(0.22, 0.9, "Internal")
+            simpleTH2_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
+
+
     def apply_style(self, hist, style_config):
         hist.SetLineColor(style_config.get('linecolor', 1))
         hist.SetLineStyle(style_config.get('linestyle', 1))
@@ -59,14 +80,11 @@ class Plotting:
         hist.SetMarkerStyle(style_config.get('markerstyle', 20))
 
     def generate_plots(self):
-        """Generate all plots based on the configuration."""
-        for plot in self.plot_configs:
-            plot_type = plot["type"]
-            if plot_type == "overlay":
-                self.plot_overlay()
-            elif plot_type == "stack":
-                self.plot_stack(plot["samples"], plot["name"])
-            elif plot_type == "ratio":
-                self.plot_ratio(plot["samples"], plot["name"])
-            else:
-                print(f"Unknown plot type: {plot_type}")
+        # create plot objects based on plot type
+        plots_overlay = [plot for plot in self.plots if plot.type == "overlay"]
+        plots_th2 = [plot for plot in self.plots if plot.type == "simple_th2"]
+
+        if plots_overlay:
+            self.plot_overlay(plots_overlay)
+        if plots_th2:
+            self.plot_simple_th2(plots_th2)

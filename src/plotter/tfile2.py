@@ -1,63 +1,49 @@
 from ROOT import TFile
 import ROOT
 
-
-class TFile2(TFile):
-    """TFile with some better functionalities
-    to enter file/dirs with context manager
-    https://docs.python.org/3/library/stdtypes.html#typecontextmanager
-
-    'If TFile is so good, why is there no TFile2?'
+class TFile2:
+    """Enhanced TFile wrapper for ROOT 6.32 compatibility.
+    Provides context management and directory handling.
     """
 
-    def __init__(self, *args, **kwargs):
-        super(TFile2, self).__init__(*args, **kwargs)
+    def __init__(self, filename, option="READ"):
+        self.file = ROOT.TFile.Open(filename, option)
+        if not self.file or self.file.IsZombie():
+            raise RuntimeError(f"Failed to open ROOT file: {filename}")
+
+    def IsZombie(self):
+        """Check if the file is a zombie."""
+        return self.file.IsZombie()
 
     def mkdir_and_cd(self, dirName: str):
-        """Create directory with context manager
-        to enter it.
-        """
-        return _MkdirContext(self, dirName)
+        """Creates a directory and enters it."""
+        return _MkdirContext(self.file, dirName)
 
-    # __enter__ and __exit__ are available
-    # since version 6.28 in ROOT but since lot
-    # of codes still use 6.26, adding them
-    # as backup here as well
-    def _enter(self):
-        return self
+    def __enter__(self):
+        return self.file
 
-    def _exit(self, exc_type, exc_val, exc_tb):
-        self.Close()
-        return False
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.file and self.file.IsOpen():
+            self.file.Close()
 
+    def Get(self, name):
+        """Get object by name."""
+        return self.file.Get(name)
 
 class _MkdirContext:
-    """Context manager for TFile.mkdir.
+    """Context manager for TFile.mkdir handling."""
 
-    Arguments:
-        tFile (`TFile`): TFile
-        dirName (`str`): directory name
-    """
-
-    def __init__(self, tFile: TFile2, dirName: str):
+    def __init__(self, tFile: ROOT.TFile, dirName: str):
         self.tFile = tFile
         self.dirName = dirName
         self._dir = self.tFile.GetDirectory(self.dirName)
         if not self._dir:
             self.tFile.mkdir(self.dirName)
-            # for some reason mkdir dir returns
-            # only top-level directory so we have
-            # call GetDirectory again
             self._dir = self.tFile.GetDirectory(self.dirName)
 
-        self.old_dir = None
-
     def __enter__(self):
-        self.old_dir = ROOT.gDirectory
-        self._dir.cd()
+        self.tFile.cd(self.dirName)
         return self._dir
 
-    def __exit__(self, type, value, traceback):
-        if self.old_dir:
-            self.old_dir.cd()
-        return False
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.tFile.cd()

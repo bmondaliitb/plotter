@@ -3,6 +3,7 @@ from .dataset import sumOfWeightHelper  # NOQA
 from .collection import collection, SuperCollection  # NOQA
 from .collection import normalizationHelper  # NOQA
 from .histo import histo  # NOQA
+from .histo import histo2D  # NOQA
 from .pad import pad  # NOQA
 from .canvas import canvas  # NOQA
 from .legend import legend  # NOQA

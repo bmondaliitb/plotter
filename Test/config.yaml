@@ -28,6 +28,9 @@ Sample:
   - name: "mllGeV_cut6"
     variable: "ZeeSelection/mllGeV_cut6"
     file_path: *file_path
+  - name: "Bias_v_ZpT_Reco_cut6"
+    variable: "ZeeSelection/Bias_v_ZpT_Reco_cut6"
+    file_path: *file_path
 
 
 # Define common styles
@@ -76,3 +79,13 @@ Plot:
     x_label: "m_{ll} [GeV]"
     y_label: "Events"
     x_range: [0, 115]
+
+  - name: "Bias_v_ZpT_Reco"
+    samples:
+      - name: "Bias_v_ZpT_Reco_cut6"
+        <<: *CommonStyles
+    type: "simple_th2"
+    x_label: "ZpT_Reco [GeV]"
+    y_label: "Bias"
+    x_range: [0, 100]
+    y_range: [-100, 100]
