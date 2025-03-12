@@ -17,7 +17,7 @@ class Plotting:
     def _create_samples(self, sample_configs):
         samples = []
         for sample_config in sample_configs:
-            sample_obj = Sample(sample_config)
+            sample_obj = Sample(sample_config, self.job_config)
             samples.append(sample_obj)
         return samples
 
@@ -47,7 +47,7 @@ class Plotting:
             if not os.path.exists(self.job_config['job_name']):
                 os.makedirs(self.job_config['job_name'])
             # if x_range is set, use it
-            if plot.x_range:
+            if hasattr(plot, 'x_range') and plot.x_range is not None:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             comparison_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
 
@@ -61,9 +61,10 @@ class Plotting:
                         histogram = sample.hist
             simpleTH2_plot.mainPad.drawoption = "colz"
             simpleTH2_plot.add_and_plot(histogram)
-            if plot.x_range:
+
+            if hasattr(plot, 'x_range') and plot.x_range is not None:
                 simpleTH2_plot.set_xrange(plot.x_range[0], plot.x_range[1])
-            if plot.y_range:
+            if hasattr(plot, 'y_range') and plot.y_range is not None:
                 simpleTH2_plot.set_yrange(plot.y_range[0], plot.y_range[1])
 
             simpleTH2_plot.set_zrange(0, 100) # hardcoded for now

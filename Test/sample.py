@@ -5,10 +5,10 @@ from plotter.histo import histo
 from plotter.histo import histo2D
 
 class Sample:
-    def __init__(self, config):
-        self.name = config["name"]
-        self.file = config["file_path"]
-        self.hist_name = config["variable"]
+    def __init__(self, sample_config, job_config):
+        self.name = sample_config["name"]
+        self.file = sample_config.get("file_path", job_config["file_path"]) # if file_path is not in sample_config, use job_config
+        self.hist_name = sample_config["variable"]
         self.hist = self.load_histogram()
 
     def load_histogram(self):

@@ -4,4 +4,5 @@ Test/.DS_Store
 Test/*.root
 Test/test
 venv
-
+Test/output1_wenu/
+Test/.idea
