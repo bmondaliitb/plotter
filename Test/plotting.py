@@ -19,6 +19,12 @@ class Plotting:
         self.atlas_label = self.job_config.get("atlas_label", "")
         self.plot_labels = self.job_config.get("plot_label", [])
         self.legend_position = self.job_config.get("legend_position", {})
+        self.output_directory = self.job_config.get("output_directory", "output")
+
+        # Create the output directory if it doesn't exist
+        self.output_path = os.path.join(self.output_directory, self.job_config['job_name'])
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
 
     def _create_samples(self, sample_configs):
         samples = []
@@ -52,13 +58,11 @@ class Plotting:
                 atlas.ATLASLabel(0.22, 0.9, "Internal")
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
-            # Save the plot
-            if not os.path.exists(self.job_config['job_name']):
-                os.makedirs(self.job_config['job_name'])
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
-            comparison_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
+            comparison_plot.save(f"{self.output_path}/{plot.name}.pdf")
+
 
     def plot_simple_th2(self, plots_th2):
         for plot in plots_th2:
@@ -83,7 +87,8 @@ class Plotting:
                 atlas.ATLASLabel(0.22, 0.9, "Internal")
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
-            simpleTH2_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
+            simpleTH2_plot.save(f"{self.output_path}/{plot.name}.pdf")
+
 
 
     def apply_style(self, hist, style_config):

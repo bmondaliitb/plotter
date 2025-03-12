@@ -38,17 +38,25 @@
 
 # Job block defines the output directory and the input file and common plot styles
 Job:
-  job_name: "output1_wenu"  # this is a folder name where the plots will be saved
-  file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  job_name: "Wenu_13TeV_Sherpa_0_5"  # this is a folder name where the plots will be saved
+  output_directory: "fal_out_Wlnu/Wenu_plots/"  # this is the output directory where the plots will be saved
+  #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "fal_out_Wlnu/Wenu/output_0.root"
+    - "fal_out_Wlnu/Wenu/output_1.root"
+    - "fal_out_Wlnu/Wenu/output_2.root"
+    - "fal_out_Wlnu/Wenu/output_3.root"
+    - "fal_out_Wlnu/Wenu/output_4.root"
+    - "fal_out_Wlnu/Wenu/output_5.root"
   # add text block in the plot for example : sqrt(s) = 13 TeV
   atlas_label: "Internal" #0.22, 0.9
   plot_label:
     - text: "W^{+} #rightarrow e^{+} #nu"
       x: 0.22
-      y: 0.85
+      y: 0.86
     - text: ", #sqrt{s} = 13 TeV"
       x: 0.45
-      y: 0.85
+      y: 0.86
 
   # Define common styles
   CommonStyles: &CommonStyles
