@@ -10,9 +10,15 @@ class Plotting:
         self.job_config = config_reader.get_job()
         self.sample_configs = config_reader.get_samples()
         self.plot_configs = config_reader.get_plots()
+
         # Create actual objects from configurations
         self.samples = self._create_samples(self.sample_configs)
         self.plots = self._create_plots()
+
+        # Get optional configurations
+        self.atlas_label = self.job_config.get("atlas_label", "")
+        self.plot_labels = self.job_config.get("plot_label", [])
+        self.legend_position = self.job_config.get("legend_position", {})
 
     def _create_samples(self, sample_configs):
         samples = []
@@ -42,7 +48,10 @@ class Plotting:
             #comparison_plot.ratioPad.drawoptions = "hist"
             comparison_plot.add_and_plot(histo_list)
             comparison_plot.canvas.cd()
-            atlas.ATLASLabel(0.22, 0.9, "Internal")
+            if self.atlas_label:
+                atlas.ATLASLabel(0.22, 0.9, "Internal")
+            for label in self.plot_labels:
+                atlas.add_text(label["x"], label["y"], label["text"])
             # Save the plot
             if not os.path.exists(self.job_config['job_name']):
                 os.makedirs(self.job_config['job_name'])
@@ -70,7 +79,10 @@ class Plotting:
             simpleTH2_plot.set_zrange(0, 100) # hardcoded for now
 
             simpleTH2_plot.canvas.cd()
-            atlas.ATLASLabel(0.22, 0.9, "Internal")
+            if self.atlas_label:
+                atlas.ATLASLabel(0.22, 0.9, "Internal")
+            for label in self.plot_labels:
+                atlas.add_text(label["x"], label["y"], label["text"])
             simpleTH2_plot.save(f"{self.job_config['job_name']}/{plot.name}.pdf")
 
 

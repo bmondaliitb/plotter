@@ -35,10 +35,26 @@
 # KEY: TH2D      met_ut3_vs_ptcone20topT_cut3;1  met_ut3_vs_ptcone20topT
 # KEY: TH2D      met_ut4_vs_ptcone20topT_cut3;1  met_ut4_vs_ptcone20topT
 # KEY: TH2D      met_ut5_vs_ptcone20topT_cut3;1  met_ut5_vs_ptcone20topT
-# Job block defines the overall style and so on
+
+# Job block defines the output directory and the input file and common plot styles
 Job:
   job_name: "output1_wenu"  # this is a folder name where the plots will be saved
   file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  # add text block in the plot for example : sqrt(s) = 13 TeV
+  atlas_label: "Internal" #0.22, 0.9
+  plot_label:
+    - text: "W^{+} #rightarrow e^{+} #nu"
+      x: 0.22
+      y: 0.85
+    - text: ", #sqrt{s} = 13 TeV"
+      x: 0.45
+      y: 0.85
+
+  # Define common styles
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
 
 # Sample block holds information of individual histograms
 Sample:
@@ -116,20 +132,14 @@ Sample:
     variable: "WplusenuSelection_Tight/met_ut5_vs_ptcone20topT_cut3"
 
 
-# Define common styles
-CommonStyles: &CommonStyles
-  markerstyle: 0
-  linestyle: 1
-  linewidth: 2
-
-# Plot block defines how we want to plot the histograms
+# Every block in the Plot block holds a plot
 Plot:
   - name: "uT"  # this is the name of the plot
     samples:
       - name: "uT_cut3"
         linecolor: 1
         <<: *CommonStyles
-    type: "overlay"  # overlay, stack, overlay_ratio, stack_ratio
+    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
     x_label: "u_{T} [GeV]"  # x-axis label
     y_label: "Events"  # y-axis label
     x_range: [0, 150]  # x-axis range

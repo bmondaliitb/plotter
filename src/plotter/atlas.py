@@ -118,6 +118,24 @@ def ATLASLabel(x: float = 0.22, y: float = 0.9, text: str = "",
         p.SetTextColor(color)
         p.DrawLatex(x + delx, y, text)
 
+
+def add_text(x: float, y: float, text: str, color: int = ROOT.kBlack, font: int = 42, size: float = 0.04):
+    """Adds a text block to the canvas at x,y position with specified text, color, font, and size.
+
+    Arguments:
+        x (``float``): x coordinate on the canvas (fraction)
+        y (``float``): y coordinate on the canvas (fraction)
+        text (``str``): text to be displayed
+        color (``int``): ROOT TColor of the text, black by default
+        font (``int``): ROOT font type, 42 by default
+        size (``float``): text size, 0.04 by default
+    """
+    l = ROOT.TLatex()
+    l.SetNDC()
+    l.SetTextFont(font)
+    l.SetTextColor(color)
+    l.SetTextSize(size)
+    l.DrawLatex(x, y, text)
 def get_lumi() -> Dict[str, float]:  
     """Returns luminosity for each year in the format
     of dict per mc campaign."""
