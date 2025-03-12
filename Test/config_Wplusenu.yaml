@@ -148,7 +148,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
-    x_label: "u_{T} [GeV]"  # x-axis label
     y_label: "Events"  # y-axis label
     x_range: [0, 150]  # x-axis range
 
@@ -158,7 +157,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "Number of electrons"
     y_label: "Events"
     x_range: [0, 5]
 
@@ -168,7 +166,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "elEta"
     y_label: "Events"
     x_range: [-3, 3]
 
@@ -178,7 +175,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "elPt [GeV]"
     y_label: "Events"
     x_range: [0, 150]
 
@@ -188,7 +184,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "met [GeV]"
     y_label: "Events"
     x_range: [0, 150]
 
@@ -198,7 +193,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "mT [GeV]"
     y_label: "Events"
     x_range: [0, 150]
 
@@ -208,8 +202,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "ptcone20topT"
-    y_label: "Events"
 
   - name: "uParLepton"
     samples:
@@ -217,7 +209,6 @@ Plot:
         linecolor: 1
         <<: *CommonStyles
     type: "overlay"
-    x_label: "uParLepton"
     y_label: "Events"
 
   - name: "uParLepton_vs_ptcone20"
@@ -225,221 +216,165 @@ Plot:
       - name: "uParLepton_vs_ptcone20_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "uParLepton"
-    y_label: "ptcone20topT"
 
   - name: "WpT_Reco_vs_ptcone20topT"
     samples:
       - name: "WpT_Reco_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "WpT_Reco"
-    y_label: "ptcone20topT"
 
   - name: "elPhi_vs_ptcone20topT"
     samples:
       - name: "elPhi_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPhi"
-    y_label: "ptcone20topT"
 
   - name: "elEta_vs_ptcone20topT"
     samples:
       - name: "elEta_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elEta"
-    y_label: "ptcone20topT"
 
   - name: "elEtaSF_vs_ptcone20topT"
     samples:
       - name: "elEtaSF_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elEtaSF"
-    y_label: "ptcone20topT"
 
   - name: "elPt_vs_ptcone20topT"
     samples:
       - name: "elPt_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPt"
-    y_label: "ptcone20topT"
 
   - name: "uT_vs_ptcone20topT"
     samples:
       - name: "uT_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "uT"
-    y_label: "ptcone20topT"
 
   - name: "met_vs_ptcone20topT"
     samples:
       - name: "met_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "met"
-    y_label: "ptcone20topT"
 
   - name: "mT_vs_ptcone20topT"
     samples:
       - name: "mT_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "mT"
-    y_label: "ptcone20topT"
 
   - name: "SET_vs_ptcone20topT"
     samples:
       - name: "SET_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "SET"
-    y_label: "ptcone20topT"
 
   - name: "SETUE_vs_ptcone20topT"
     samples:
       - name: "SETUE_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "SETUE"
-    y_label: "ptcone20topT"
 
   - name: "recoil_PAR_lep_vs_ptcone20topT"
     samples:
       - name: "recoil_PAR_lep_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "recoil_PAR_lep"
-    y_label: "ptcone20topT"
 
   - name: "recoil_PERP_lep_vs_ptcone20topT"
     samples:
       - name: "recoil_PERP_lep_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "recoil_PERP_lep"
-    y_label: "ptcone20topT"
 
   - name: "mT_ut1_vs_ptcone20topT"
     samples:
       - name: "mT_ut1_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "mT_ut1"
-    y_label: "ptcone20topT"
 
   - name: "mT_ut2_vs_ptcone20topT"
     samples:
       - name: "mT_ut2_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "mT_ut2"
-    y_label: "ptcone20topT"
 
   - name: "mT_ut3_vs_ptcone20topT"
     samples:
       - name: "mT_ut3_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "mT_ut3"
-    y_label: "ptcone20topT"
 
   - name: "mT_ut4_vs_ptcone20topT"
     samples:
       - name: "mT_ut4_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "mT_ut4"
-    y_label: "ptcone20topT"
 
   - name: "mT_ut5_vs_ptcone20topT"
     samples:
       - name: "mT_ut5_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "mT_ut5"
-    y_label: "ptcone20topT"
 
   - name: "elPt_ut1_vs_ptcone20topT"
     samples:
       - name: "elPt_ut1_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPt_ut1"
-    y_label: "ptcone20topT"
 
   - name: "elPt_ut2_vs_ptcone20topT"
     samples:
       - name: "elPt_ut2_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPt_ut2"
-    y_label: "ptcone20topT"
 
   - name: "elPt_ut3_vs_ptcone20topT"
     samples:
       - name: "elPt_ut3_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPt_ut3"
-    y_label: "ptcone20topT"
 
   - name: "elPt_ut4_vs_ptcone20topT"
     samples:
       - name: "elPt_ut4_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPt_ut4"
-    y_label: "ptcone20topT"
 
   - name: "elPt_ut5_vs_ptcone20topT"
     samples:
       - name: "elPt_ut5_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "elPt_ut5"
-    y_label: "ptcone20topT"
 
   - name: "met_ut1_vs_ptcone20topT"
     samples:
       - name: "met_ut1_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "met_ut1"
-    y_label: "ptcone20topT"
 
   - name: "met_ut2_vs_ptcone20topT"
     samples:
       - name: "met_ut2_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "met_ut2"
-    y_label: "ptcone20topT"
 
   - name: "met_ut3_vs_ptcone20topT"
     samples:
       - name: "met_ut3_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "met_ut3"
-    y_label: "ptcone20topT"
 
   - name: "met_ut4_vs_ptcone20topT"
     samples:
       - name: "met_ut4_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "met_ut4"
-    y_label: "ptcone20topT"
 
   - name: "met_ut5_vs_ptcone20topT"
     samples:
       - name: "met_ut5_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
-    x_label: "met_ut5"
-    y_label: "ptcone20topT"

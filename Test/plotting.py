@@ -49,6 +49,10 @@ class Plotting:
                     if sample.name == plot_sample["name"]:
                         self.apply_style(sample.hist, plot_sample)
                         histo_list.append(sample.hist)
+                        if not plot.x_label:
+                            plot.x_label = sample.hist.th.GetXaxis().GetTitle()
+                        if not plot.y_label:
+                            plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
             comparison_plot.mainPad.drawoption = "hist E"
             #comparison_plot.ratioPad.drawoptions = "hist"
@@ -72,6 +76,10 @@ class Plotting:
                 for plot_sample in plot.samples:
                     if sample.name == plot_sample["name"]:
                         histogram = sample.hist
+                        if not plot.x_label:
+                            plot.x_label = sample.hist.th.GetXaxis().GetTitle()
+                        if not plot.y_label:
+                            plot.y_label = sample.hist.th.GetYaxis().GetTitle()
             simpleTH2_plot.mainPad.drawoption = "colz"
             simpleTH2_plot.add_and_plot(histogram)
 
