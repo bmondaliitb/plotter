@@ -282,12 +282,14 @@ Plot:
       - name: "recoil_PAR_lep_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
+    y_label: "p_{T}^{cone20}/p_{T}"
 
   - name: "recoil_PERP_lep_vs_ptcone20topT"
     samples:
       - name: "recoil_PERP_lep_vs_ptcone20topT_cut3"
         <<: *CommonStyles
     type: "simple_th2"
+    y_label: "p_{T}^{cone20}/p_{T}"
 
   - name: "mT_ut1_vs_ptcone20topT"
     samples:

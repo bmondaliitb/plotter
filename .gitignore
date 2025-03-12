@@ -1,9 +1,9 @@
 __pycache__
-Test/__pycache__
-Test/.DS_Store
+SimplePlotter/__pycache__
+SimplePlotter/.DS_Store
 Test/*.root
-Test/test
+SimplePlotter/test
 venv
-Test/output1_wenu/
-Test/.idea
-Test/fal_out_Wlnu
+SimplePlotter/output1_wenu/
+SimplePlotter/.idea
+SimplePlotter/fal_out_Wlnu
