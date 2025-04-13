@@ -40,6 +40,32 @@ class Plotting:
             plots.append(plot_obj)
         return plots
 
+    def plot_simple(self, plots_simple):
+        for plot in plots_simple:
+            simple_plot = presets.simple(plot.name, plot.x_label, plot.y_label)
+            histo_list = []
+            for sample in self.samples:
+                for plot_sample in plot.samples:
+                    if sample.name == plot_sample["name"]:
+                        self.apply_style(sample.hist, plot_sample)
+                        histo_list.append(sample.hist)
+                        if not plot.x_label:
+                            plot.x_label = sample.hist.th.GetXaxis().GetTitle()
+                        if not plot.y_label:
+                            plot.y_label = sample.hist.th.GetYaxis().GetTitle()
+
+            simple_plot.mainPad.drawoption = "hist E"
+            simple_plot.add_and_plot(histo_list)
+            simple_plot.canvas.cd()
+            if self.atlas_label:
+                atlas.ATLASLabel(0.22, 0.9, "Internal")
+            for label in self.plot_labels:
+                atlas.add_text(label["x"], label["y"], label["text"])
+            # if x_range is set, use it
+            if hasattr(plot, 'x_range') and plot.x_range is not None:
+                simple_plot.set_xrange(plot.x_range[0], plot.x_range[1])
+            simple_plot.save(f"{self.output_path}/{plot.name}.pdf")
+
     def plot_overlay(self, plots_overlay):
         for plot in plots_overlay:
             comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label)
@@ -107,9 +133,12 @@ class Plotting:
 
     def generate_plots(self):
         # create plot objects based on plot type
+        plots_simple = [plot for plot in self.plots if plot.type == "simple_th1"]
         plots_overlay = [plot for plot in self.plots if plot.type == "overlay"]
         plots_th2 = [plot for plot in self.plots if plot.type == "simple_th2"]
 
+        if plots_simple:
+            self.plot_simple(plots_simple)
         if plots_overlay:
             self.plot_overlay(plots_overlay)
         if plots_th2:
