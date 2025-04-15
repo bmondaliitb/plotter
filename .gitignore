@@ -1,4 +1,5 @@
 SimplePlotter/**/*config*.yaml
+SimplePlotter/Truth-Recoil-using-Rivet
 **/*__pycache__
 **/*.root
 **/*venv
@@ -9,3 +10,4 @@ SimplePlotter/**/*config*.yaml
 **/*fal_out_Wlnu
 **/*output1_wenu/
 **/*.swp
+**/*.cfg

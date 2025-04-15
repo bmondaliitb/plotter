@@ -81,7 +81,7 @@ class Plotting:
                             plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
             comparison_plot.mainPad.drawoption = "hist E"
-            #comparison_plot.ratioPad.drawoptions = "hist"
+            #comparison_plot.ratioPad.set_yrange(0.90, 1.10)
             comparison_plot.add_and_plot(histo_list)
             comparison_plot.canvas.cd()
             if self.atlas_label:

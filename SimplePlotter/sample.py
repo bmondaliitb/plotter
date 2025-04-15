@@ -1,4 +1,5 @@
 import glob
+import sys
 import ROOT
 from plotter.dataset import dataset
 from plotter.tfile2 import TFile2 as tfile2
@@ -15,7 +16,11 @@ class Sample:
     def _expand_file_paths(self, file_paths):
         expanded_files = []
         for path in file_paths:
-            expanded_files.extend(glob.glob(path))
+            matched_files = glob.glob(path)
+            if not matched_files:
+                print(f"Error: No files found matching path '{path}'")
+                sys.exit(1)
+            expanded_files.extend(matched_files)
         return expanded_files
 
     def load_histogram(self):
@@ -23,6 +28,9 @@ class Sample:
         for file_path in self.files:
             root_file = tfile2(file_path)
             histogram = root_file.Get(self.hist_name)
+            if not histogram:
+                print(f"Error: Histogram '{self.hist_name}' not found in file '{file_path}'")
+                sys.exit(1)
             if isinstance(histogram, ROOT.TH2):
                 if hist is None:
                     hist = histo2D(self.name, histogram)

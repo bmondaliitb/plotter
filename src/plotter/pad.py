@@ -243,14 +243,6 @@ class pad:
                 fillcolor=ROOT.kWhite,
                 drawoption=self.drawoption,
             )
-        elif hasattr(self.histos[0], 'isTH1') and self.histos[0].isTH1:
-            self.basis = histo(
-                "",
-                self.histos[0].th.Clone("basis"),
-                linecolor=ROOT.kWhite,
-                fillcolor=ROOT.kWhite,
-                drawoption=self.drawoption,
-            )
         elif hasattr(self.histos[0], 'isTH2') and self.histos[0].isTH2:
             self.basis = histo(
                 "",
@@ -259,6 +251,15 @@ class pad:
                 fillcolor=ROOT.kWhite,
                 drawoption=self.drawoption,
             )
+        elif hasattr(self.histos[0], 'isTH1') and self.histos[0].isTH1:
+            self.basis = histo(
+                "",
+                self.histos[0].th.Clone("basis"),
+                linecolor=ROOT.kWhite,
+                fillcolor=ROOT.kWhite,
+                drawoption=self.drawoption,
+            )
+
         self.basis.th.Reset()
         self._set_basis_axis_title()
 
