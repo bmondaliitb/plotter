@@ -1,0 +1,63 @@
+# Job block defines the output directory and the input file and common plot styles
+Job:
+  job_name: "cluster_info"  # this is a folder name where the plots will be saved
+  output_directory: "cluster_output/outTree.root"  # this is the output directory where the plots will be saved
+  #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/Users/buddha/Desktop/current_work/Project-W-Z/MiniTreeMaker13TeV/hist_avg_ratio_manual.root"
+  # add text block in the plot for example : sqrt(s) = 13 TeV
+  atlas_label: "Internal" #0.22, 0.9
+  #plot_label:
+  #  - text: "W^{+}#rightarrow mu^{+}#nu"
+  #    x: 0.22
+  #    y: 0.86
+  #  - text: ", #sqrt{s} = 13 TeV"
+  #    x: 0.36
+  #    y: 0.86
+
+  # Define common styles
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "h_eta_avg"  # name of the sample
+    variable: "h_eta_avg"  # this is the name of the histogram in the ROOT file
+  - name: "h_pt_avg"
+    variable: "h_pt_avg"
+  - name: "h_phi_avg"
+    variable: "h_phi_avg"
+
+
+## Every block in the Plot block holds a plot
+Plot:
+  - name: "h_eta_avg"  # this is the name of the plot
+    samples:
+      - name: "h_eta_avg"
+        linecolor: 1
+        <<: *CommonStyles
+    type: "simple_th1"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "<E^{LCW}_{clus}/E^{EM}_{clus}>"  # y-axis label
+    x_label: "#eta_{clus}"
+    x_range: [-5, 5]  # x-axis range
+
+  - name: "h_pt_avg"  # this is the name of the plot
+    samples:
+      - name: "h_pt_avg"
+        linecolor: 1
+        <<: *CommonStyles
+    type: "simple_th1"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "<E^{LCW}_{clus}/E^{EM}_{clus}>"  # y-axis label
+    x_range: [0, 200]  # x-axis range
+
+#  - name: "h_phi_avg"  # this is the name of the plot
+#    samples:
+#      - name: "h_phi_avg"
+#        linecolor: 1
+#        <<: *CommonStyles
+#    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
+#    y_label: "<E_calib/E>"  # y-axis label
+#    x_range: [-3.2, 3.2]  # x-axis range
+#    y_range: [2, 2.5]

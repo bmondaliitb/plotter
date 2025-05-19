@@ -1,0 +1,345 @@
+# Job block defines the output directory and the input file and common plot styles
+Job:
+  job_name: "comperison_uPerp"  # this is a folder name where the plots will be saved
+  output_directory: "/Users/buddha/Storage/HEP/Project-W-Z/Hadronic_Recoil/plotter/SimplePlotter/Truth-Recoil-using-Rivet/Plots/comparison_uPerp"  # this is the output directory where the plots will be saved
+  #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/Users/buddha/Storage/HEP/Project-W-Z/Hadronic_Recoil/plotter/SimplePlotter/Truth-Recoil-using-Rivet/Root-files/Rivet_ATLAS_HR_200k_v2.root"
+  atlas_label: "Internal" #0.22, 0.9
+
+  # Define common styles
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "u_perp_setup1"  
+    variable: "Rivet_ATLAS_HR/u_perpendicular_setup1"
+  - name: "u_perp_setup1.5"
+    variable: "Rivet_ATLAS_HR/u_perpendicular_setup1.5"
+  - name: "u_perp_setup2"  
+    variable: "Rivet_ATLAS_HR/u_perpendicular_setup2"
+  - name: "u_perp_setup3"  
+    variable: "Rivet_ATLAS_HR/u_perpendicular_setup3"
+  - name: "u_perp_setup4"  
+    variable: "Rivet_ATLAS_HR/u_perpendicular_setup4"
+#  - name: "u_perp_setup5"  
+#    variable: "Rivet_ATLAS_HR/u_perpendicular_setup5"
+#  - name: "u_perp_setup6"  
+#    variable: "Rivet_ATLAS_HR/u_perpendicular_setup6"
+#  - name: "u_perp_setup7"  
+#    variable: "Rivet_ATLAS_HR/u_perpendicular_setup7"
+  - name: "ut_full_phase_space"
+    file_paths:
+      - "/Users/buddha/Storage/HEP/Project-W-Z/Hadronic_Recoil/plotter/SimplePlotter/Truth-Recoil-using-Rivet/Root-files/Rivet_ATLAS_HR_200k_setup_for_full_phase_space.root"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_default"
+  - name: "uT1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1"
+  - name: "uT1.5"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1.5"
+  - name: "uT2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2"
+  - name: "uT3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3"
+  - name: "uT4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4"
+  - name: "uT5"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup5"
+  - name: "uT6"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup6"
+  - name: "sumEt_ptV_0_5_setup3"
+    variable: "Rivet_ATLAS_HR/sumEt_ptV_0_5_setup3"
+  - name: "sumEt_ptV_5_10_setup3"
+    variable: "Rivet_ATLAS_HR/sumEt_ptV_5_10_setup3"
+  - name: "sumEt_ptV_15_20_setup3"
+    variable: "Rivet_ATLAS_HR/sumEt_ptV_15_20_setup3"
+  - name: "sumEt_ptV_50_60_setup3"
+    variable: "Rivet_ATLAS_HR/sumEt_ptV_50_60_setup3"
+  - name: "ptll"
+    variable: "Rivet_ATLAS_HR/ptll_setup1"
+  - name: "uT_pt1"
+    variable: "Rivet_ATLAS_HR/recoil_pt_setup1"
+  - name: "uT_pt2"
+    variable: "Rivet_ATLAS_HR/recoil_pt_setup2"
+  - name: "uT_pt3"
+    variable: "Rivet_ATLAS_HR/recoil_pt_setup3"
+  - name: "uT_pt4"
+    variable: "Rivet_ATLAS_HR/recoil_pt_setup4"
+  - name: "uT_eta1"
+    variable: "Rivet_ATLAS_HR/recoil_eta_setup1"
+  - name: "uT_eta2"
+    variable: "Rivet_ATLAS_HR/recoil_eta_setup2"
+  - name: "uT_eta3"
+    variable: "Rivet_ATLAS_HR/recoil_eta_setup3"
+  - name: "uT_eta4"
+    variable: "Rivet_ATLAS_HR/recoil_eta_setup4"
+  - name: "bias1"
+    variable: "Rivet_ATLAS_HR/bias_setup1"
+  - name: "bias2"
+    variable: "Rivet_ATLAS_HR/bias_setup2"
+  - name: "bias3"
+    variable: "Rivet_ATLAS_HR/bias_setup3"
+  - name: "bias4"
+    variable: "Rivet_ATLAS_HR/bias_setup4"
+  - name: "delta_phi_uT_Z1"
+    variable: "Rivet_ATLAS_HR/delta_phi_uT_Z_setup1"
+  - name: "delta_phi_uT_Z2"
+    variable: "Rivet_ATLAS_HR/delta_phi_uT_Z_setup2"
+  - name: "delta_phi_uT_Z3"
+    variable: "Rivet_ATLAS_HR/delta_phi_uT_Z_setup3"
+  - name: "delta_phi_uT_Z4"
+    variable: "Rivet_ATLAS_HR/delta_phi_uT_Z_setup4"
+  - name: "uT_excluded_mag1"
+    variable: "Rivet_ATLAS_HR/uT_excluded_mag_setup1"
+  - name: "uT_excluded_mag2"
+    variable: "Rivet_ATLAS_HR/uT_excluded_mag_setup2"
+  - name: "uT_excluded_mag3"
+    variable: "Rivet_ATLAS_HR/uT_excluded_mag_setup3"
+  - name: "uT_excluded_mag4"
+    variable: "Rivet_ATLAS_HR/uT_excluded_mag_setup4"
+  - name: "h_recoil_vs_ptll1"
+    variable: "Rivet_ATLAS_HR/recoil_vs_ptll_setup1"
+  - name: "h_recoil_vs_ptll2"
+    variable: "Rivet_ATLAS_HR/recoil_vs_ptll_setup2"
+  - name: "h_recoil_vs_ptll3"
+    variable: "Rivet_ATLAS_HR/recoil_vs_ptll_setup3"
+  - name: "h_recoil_vs_ptll4"
+    variable: "Rivet_ATLAS_HR/recoil_vs_ptll_setup4"
+  - name: "h_uperp_vs_ptll1"
+    variable: "Rivet_ATLAS_HR/uperp_vs_ptll_setup1"
+  - name: "h_uperp_vs_ptll2"
+    variable: "Rivet_ATLAS_HR/uperp_vs_ptll_setup2"
+  - name: "h_uperp_vs_ptll3"
+    variable: "Rivet_ATLAS_HR/uperp_vs_ptll_setup3"
+  - name: "h_uperp_vs_ptll4"
+    variable: "Rivet_ATLAS_HR/uperp_vs_ptll_setup4"
+
+
+
+Plot:
+  - name: "u_perp_comp"  # this is the name of the plot
+    samples:
+      - name: "u_perp_setup1"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "u_perp_setup1.5"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "u_perp_setup2"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "u_perp_setup3"
+        linecolor: 4
+        <<: *CommonStyles
+      - name: "u_perp_setup4"
+        linecolor: 5
+        <<: *CommonStyles
+    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "A.U"  # y-axis label
+    x_label: "u_{perp}"
+    x_range: [-20, 20]  # x-axis range
+  - name: "u_T"
+    samples:
+      #- name: "ut_full_phase_space"
+      #  linecolor: 1
+      #  <<: *CommonStyles
+      - name: "uT1"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "uT1.5"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "uT2"
+        linecolor: 4
+        <<: *CommonStyles
+      #- name: "uT3"
+      #  linecolor: 5
+      #  <<: *CommonStyles
+      #- name: "uT4"
+      #  linecolor: 6
+      #  <<: *CommonStyles
+    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "A.U"  # y-axis label
+    x_label: "u_{T}"
+    x_range: [0, 100]  # x-axis range
+  - name: "u_T_central_only"
+    samples:
+      - name: "uT2"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "uT3"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "uT5"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "uT6"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "A.U"  # y-axis label
+    x_label: "u_{T}"
+    x_range: [0, 100]  # x-axis range
+  - name: "sumEt_in_different_ptV"
+    samples:
+      - name: "sumEt_ptV_0_5_setup3"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "sumEt_ptV_5_10_setup3"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "sumEt_ptV_15_20_setup3"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "sumEt_ptV_50_60_setup3"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "A.U"  # y-axis label
+    x_label: "#Sigma E_{T}"
+    x_range: [0, 500]  # x-axis range
+  - name: "ptll"
+    samples:
+      - name: "ptll"
+        linecolor: 1
+        <<: *CommonStyles
+    type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
+    y_label: "A.U"  # y-axis label
+    x_label: "p_{T}(ll)"
+    x_range: [0, 200]  # x-axis range
+  - name: "uT_pt"
+    samples:
+      - name: "uT_pt1"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "uT_pt2"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "uT_pt3"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "uT_pt4"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"
+    y_label: "A.U" 
+    x_label: "p_{T}(u_{T})"
+    x_range: [0, 200]
+  - name: "uT_eta"
+    samples:
+      - name: "uT_eta1"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "uT_eta2"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "uT_eta3"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "uT_eta4"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"
+    y_label: "A.U" 
+    x_label: "#eta(u_{T})"
+    x_range: [-5, 5]
+  - name: "bias"
+    samples:
+      - name: "bias1"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "bias2"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "bias3"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "bias4"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"
+    y_label: "A.U" 
+    x_label: "Bias"
+    x_range: [-30.0, 30.0]
+  - name: "delta_phi_uT_Z"
+    samples:
+      - name: "delta_phi_uT_Z1"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "delta_phi_uT_Z2"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "delta_phi_uT_Z3"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "delta_phi_uT_Z4"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"
+    y_label: "A.U" 
+    x_label: "#Delta #phi(u_{T},Z)"
+    x_range: [-3.5, 3.5]
+  - name: "uT_excluded_mag"
+    samples:
+      - name: "uT_excluded_mag1"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "uT_excluded_mag2"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "uT_excluded_mag3"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "uT_excluded_mag4"
+        linecolor: 4
+        <<: *CommonStyles
+    type: "overlay"
+    y_label: "A.U" 
+    x_label: "u_{T}(#eta>4.8)"
+    x_range: [0, 200]
+  - name: "h_recoil_vs_ptll1"
+    samples:
+      - name: "h_recoil_vs_ptll1"
+        <<: *CommonStyles
+    type: "simple_th2"
+    x_label: "u_{T}"
+    y_label: "p_{T}(ll)"
+  - name: "h_recoil_vs_ptll2"
+    samples:
+      - name: "h_recoil_vs_ptll2"
+        <<: *CommonStyles
+    x_label: "u_{T}"
+    y_label: "pt(ll)"
+    type: "simple_th2"
+  - name: "h_recoil_vs_ptll3"
+    samples:
+      - name: "h_recoil_vs_ptll3"
+        <<: *CommonStyles
+    type: "simple_th2"
+  - name: "h_recoil_vs_ptll4"
+    samples:
+      - name: "h_recoil_vs_ptll4"
+        <<: *CommonStyles
+    type: "simple_th2"
+#  - name: "h_perp_vs_ptll1"
+#    samples:
+#      - name: "h_perp_vs_ptll1"
+#        <<: *CommonStyles
+#    type: "simple_th2"
+#  - name: "h_perp_vs_ptll2"
+#    samples:
+#      - name: "h_perp_vs_ptll2"
+#        <<: *CommonStyles
+#    type: "simple_th2"
+#  - name: "h_perp_vs_ptll3"
+#    samples:
+#      - name: "h_perp_vs_ptll3"
+#        <<: *CommonStyles
+#    type: "simple_th2"
+#  - name: "h_perp_vs_ptll4"
+#    samples:
+#      - name: "h_perp_vs_ptll4"
+#        <<: *CommonStyles
+#    type: "simple_th2"

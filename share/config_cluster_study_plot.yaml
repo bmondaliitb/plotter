@@ -1,0 +1,119 @@
+# This is a configuration file used for plotting
+# simple histograms from the cluster truth study
+Job:
+  job_name: "ClusterStudyPlots"  # this is a folder name where the plots will be saved
+  output_directory: "/Users/buddha/Storage/HEP/Project-W-Z/Hadronic_Recoil/plotter/SimplePlotter/TopoClusterTruthStudy/Plots/"
+  #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/Users/buddha/Storage/HEP/Project-W-Z/Hadronic_Recoil/plotter/SimplePlotter/TopoClusterTruthStudy/Root-files/ClusterEnergies.root"
+  atlas_label: "Internal" #0.22, 0.9
+
+  # Define common styles
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "TrueVsCalibrated"
+    variable: "TrueVsCalibrated"
+  - name: "TrueVsUncalibrated"
+    variable: "TrueVsUncalibrated"
+  - name: "uTFromClusters"
+    variable: "uTFromClusters"
+  - name: "uTFromPFOs"
+    variable: "uTFromPFOs"
+  - name: "CellSignificance"
+    variable: "CellSignificance"
+  - name: "EnergyInEta_0.0_1.0"
+    variable: "EnergyInEta_0.0_1.0"
+  - name: "EnergyInEta_1.0_2.0"
+    variable: "EnergyInEta_1.0_2.0"
+  - name: "EnergyInEta_2.0_3.0"
+    variable: "EnergyInEta_2.0_3.0"
+  - name: "EnergyInEta_3.0_4.0"
+    variable: "EnergyInEta_3.0_4.0"
+  - name: "EnergyInEta_4.0_5.0"
+    variable: "EnergyInEta_4.0_5.0"
+  - name: "TrueVsCalibrated"
+    variable: "TrueVsCalibrated"
+  - name: "TrueVsUncalibrated"
+    variable: "TrueVsUncalibrated"
+  - name: "EEmOverETrue"
+    variable: "EEmOverETrue"
+  - name: "ELcwOverETrue"
+    variable: "ELcwOverETrue"
+
+
+
+Plot:
+  - name: "TrueVsCalibrated"  # this is the name of the plot
+    samples:
+      - name: "TrueVsCalibrated"
+    type: "simple_th2"  # different typs of plots: overlay, simple_th2, stack ...
+  - name: "TrueVsUncalibrated"
+    samples:
+      - name: "TrueVsUncalibrated"
+    type: "simple_th2"  # different typs of plots: overlay, simple_th2, stack ...
+  - name: "uTFromPFOsAndCluster"
+    samples:
+      - name: "uTFromClusters"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "uTFromPFOs"
+        linecolor: 2
+        <<: *CommonStyles
+    type: "overlay"
+  - name: "CellSignificance"
+    samples:
+      - name: "CellSignificance"
+        linecolor: 1
+        <<: *CommonStyles
+    type: "simple_th1"
+  - name: "comp_cell_significance"
+    samples:
+      - name: "EnergyInEta_0.0_1.0"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "EnergyInEta_1.0_2.0"
+        linecolor: 2
+        <<: *CommonStyles
+      - name: "EnergyInEta_2.0_3.0"
+        linecolor: 3
+        <<: *CommonStyles
+      - name: "EnergyInEta_3.0_4.0"
+        linecolor: 4
+        <<: *CommonStyles
+      - name: "EnergyInEta_4.0_5.0"
+        linecolor: 6
+        <<: *CommonStyles
+    type: "overlay"
+    xaxis_title: "Cell significance"
+  - name: "true_vs_calibrated"
+    samples:
+      - name: "TrueVsCalibrated"
+        linecolor: 1
+        <<: *CommonStyles
+    type: "simple_th2"
+    xaxis_title: "True energy"
+    yaxis_title: "Calibrated energy"
+  - name: "true_vs_uncalibrated"
+    samples:
+      - name: "TrueVsUncalibrated"
+        linecolor: 1
+        <<: *CommonStyles
+    type: "simple_th2"
+    xaxis_title: "True energy"
+    yaxis_title: "Uncalibrated energy"
+  - name: "EOverETrue"
+    samples:
+      - name: "EEmOverETrue"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "ELcwOverETrue"
+        linecolor: 2
+        <<: *CommonStyles
+    type: "overlay"
+    xaxis_title: "E/Etrue"
+    yaxis_title: "Number of clusters"
