@@ -1,8 +1,11 @@
 import os
+import logging
 from sample import Sample
 from plot import Plot
 from plotter import presets
 from plotter import atlas
+
+log = logging.getLogger(__name__)
 
 class Plotting:
     def __init__(self, config_reader):
@@ -82,6 +85,7 @@ class Plotting:
 
             comparison_plot.mainPad.drawoption = "hist E"
             #comparison_plot.ratioPad.set_yrange(0.90, 1.10)
+            comparison_plot.ratioPad.set_yrange(0.5, 1.50)
             comparison_plot.add_and_plot(histo_list)
             comparison_plot.canvas.cd()
             if self.atlas_label:
@@ -98,14 +102,21 @@ class Plotting:
         for plot in plots_th2:
             simpleTH2_plot = presets.SimpleTH2(plot.name, plot.x_label, plot.y_label)
             histogram = None
-            for sample in self.samples:
-                for plot_sample in plot.samples:
-                    if sample.name == plot_sample["name"]:
+            sample_found = False
+            for plot_sample in plot.samples:
+                for sample in self.samples:
+                    if plot_sample["name"] == sample.name:
+                        sample_found = True
                         histogram = sample.hist
                         if not plot.x_label:
                             plot.x_label = sample.hist.th.GetXaxis().GetTitle()
                         if not plot.y_label:
                             plot.y_label = sample.hist.th.GetYaxis().GetTitle()
+            # if no sample was found, log an error
+            if not sample_found:
+                log.error(f"ERROR: No sample found for plot {plot.name}")
+                return  # Safely exit the function
+
             simpleTH2_plot.mainPad.drawoption = "colz"
             simpleTH2_plot.add_and_plot(histogram)
 

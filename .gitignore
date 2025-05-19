@@ -1,5 +1,6 @@
 SimplePlotter/**/*config*.yaml
 SimplePlotter/Truth-Recoil-using-Rivet
+SimplePlotter/TopoClusterTruthStudy
 **/*__pycache__
 **/*.root
 **/*venv
