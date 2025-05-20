@@ -11,7 +11,10 @@ class Sample:
         self.name = sample_config["name"]
         self.files = self._expand_file_paths(sample_config.get("file_paths", job_config["file_paths"])) # if file_paths not set in sample, use job file_paths
         self.hist_name = sample_config["variable"]
+        self.normalize = sample_config.get("normalize", False)
         self.hist = self.load_histogram()
+        if self.normalize:
+            self.normalize_histogram()
 
     def _expand_file_paths(self, file_paths):
         expanded_files = []
@@ -42,3 +45,9 @@ class Sample:
                 else:
                     hist.th.Add(histogram)
         return hist
+
+    def normalize_histogram(self):
+        if hasattr(self.hist, "th"):
+            integral = self.hist.th.Integral()
+            if integral != 0:
+                self.hist.th.Scale(1.0 / integral)
