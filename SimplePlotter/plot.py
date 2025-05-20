@@ -11,3 +11,5 @@ class Plot:
         self.y_label = config.get("y_label", "")
         self.x_range = config.get("x_range", None)
         self.y_range = config.get("y_range", None)
+        self.setlogy = config.get("setlogy", False)
+        self.setlogx = config.get("setlogx", False)

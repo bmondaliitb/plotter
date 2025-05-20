@@ -58,6 +58,11 @@ class Plotting:
                             plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
             simple_plot.mainPad.drawoption = "hist E"
+            if getattr(plot, "setlogy", False):
+                simple_plot.mainPad.logy()
+            if getattr(plot, "setlogx", False):
+                simple_plot.mainPad.logx()
+
             simple_plot.add_and_plot(histo_list)
             simple_plot.canvas.cd()
             if self.atlas_label:
@@ -84,6 +89,10 @@ class Plotting:
                             plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
             comparison_plot.mainPad.drawoption = "hist E"
+            if getattr(plot, "setlogy", False):
+                comparison_plot.mainPad.logy()
+            if getattr(plot, "setlogx", False):
+                comparison_plot.mainPad.logx()
             #comparison_plot.ratioPad.set_yrange(0.80, 1.20)
             comparison_plot.ratioPad.set_yrange(0.90, 1.10)
             #comparison_plot.ratioPad.set_yrange(0.5, 1.50)

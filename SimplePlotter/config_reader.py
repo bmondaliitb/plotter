@@ -11,6 +11,12 @@ class ConfigReader:
         """Read the configuration file and store the data."""
         with open(self.config_file, 'r') as file:
             config_data = yaml.safe_load(file)
+            # apply common styles to all samples
+            common_styles = config_data["Job"].get("CommonStyles", {})
+            for plot in config_data.get("Plot", []):
+                for sample in plot.get("samples", []):
+                    for k, v in common_styles.items():
+                        sample.setdefault(k, v)
 
         # Store the Job block
         self.job = config_data.get("Job", {})
