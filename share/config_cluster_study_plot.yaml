@@ -9,6 +9,7 @@ Job:
   atlas_label: "Internal" #0.22, 0.9
 
   # Define common styles
+  # its applied automatically to all histograms
   CommonStyles: &CommonStyles
     markerstyle: 0
     linestyle: 1
@@ -28,14 +29,19 @@ Sample:
     variable: "CellSignificance"
   - name: "EnergyInEta_0.0_1.0"
     variable: "EnergyInEta_0.0_1.0"
+    normalize: true
   - name: "EnergyInEta_1.0_2.0"
     variable: "EnergyInEta_1.0_2.0"
+    normalize: true
   - name: "EnergyInEta_2.0_3.0"
     variable: "EnergyInEta_2.0_3.0"
+    normalize: true
   - name: "EnergyInEta_3.0_4.0"
     variable: "EnergyInEta_3.0_4.0"
+    normalize: true
   - name: "EnergyInEta_4.0_5.0"
     variable: "EnergyInEta_4.0_5.0"
+    normalize: true
   - name: "TrueVsCalibrated"
     variable: "TrueVsCalibrated"
   - name: "TrueVsUncalibrated"
@@ -58,43 +64,23 @@ Plot:
     type: "simple_th2"  # different typs of plots: overlay, simple_th2, stack ...
   - name: "uTFromPFOsAndCluster"
     samples:
-      - name: "uTFromClusters"
-        linecolor: 1
-        <<: *CommonStyles
-      - name: "uTFromPFOs"
-        linecolor: 2
-        <<: *CommonStyles
+      - name: [{"uTFromClusters",linecolor: 1},{name: "uTFromPFOs", linecolor: 2}]
     type: "overlay"
   - name: "CellSignificance"
     samples:
       - name: "CellSignificance"
         linecolor: 1
-        <<: *CommonStyles
     type: "simple_th1"
   - name: "comp_cell_significance"
-    samples:
-      - name: "EnergyInEta_0.0_1.0"
-        linecolor: 1
-        <<: *CommonStyles
-      - name: "EnergyInEta_1.0_2.0"
-        linecolor: 2
-        <<: *CommonStyles
-      - name: "EnergyInEta_2.0_3.0"
-        linecolor: 3
-        <<: *CommonStyles
-      - name: "EnergyInEta_3.0_4.0"
-        linecolor: 4
-        <<: *CommonStyles
-      - name: "EnergyInEta_4.0_5.0"
-        linecolor: 6
-        <<: *CommonStyles
-    type: "overlay"
+    samples: [{name: "EnergyInEta_0.0_1.0", linecolor: 1}, {name: "EnergyInEta_1.0_2.0", linecolor: 2}, {name: "EnergyInEta_2.0_3.0", linecolor: 3}, {name: "EnergyInEta_3.0_4.0", linecolor: 4}, {name: "EnergyInEta_4.0_5.0", linecolor: 6}]
+    type: "simple_th1"
+    #setlogy: true
+    #setlogx: true
     xaxis_title: "Cell significance"
   - name: "true_vs_calibrated"
     samples:
       - name: "TrueVsCalibrated"
         linecolor: 1
-        <<: *CommonStyles
     type: "simple_th2"
     xaxis_title: "True energy"
     yaxis_title: "Calibrated energy"
@@ -102,7 +88,6 @@ Plot:
     samples:
       - name: "TrueVsUncalibrated"
         linecolor: 1
-        <<: *CommonStyles
     type: "simple_th2"
     xaxis_title: "True energy"
     yaxis_title: "Uncalibrated energy"
@@ -110,10 +95,8 @@ Plot:
     samples:
       - name: "EEmOverETrue"
         linecolor: 1
-        <<: *CommonStyles
       - name: "ELcwOverETrue"
         linecolor: 2
-        <<: *CommonStyles
     type: "overlay"
     xaxis_title: "E/Etrue"
     yaxis_title: "Number of clusters"
