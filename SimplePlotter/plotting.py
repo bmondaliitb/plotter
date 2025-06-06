@@ -93,9 +93,10 @@ class Plotting:
                 comparison_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
                 comparison_plot.mainPad.logx()
-            #comparison_plot.ratioPad.set_yrange(0.80, 1.20)
-            comparison_plot.ratioPad.set_yrange(0.90, 1.10)
-            #comparison_plot.ratioPad.set_yrange(0.5, 1.50)
+            if hasattr(plot, 'y_range_ratio') and plot.y_range_ratio is not None:
+                comparison_plot.ratioPad.set_yrange(plot.y_range_ratio[0], plot.y_range_ratio[1])
+            else:
+                comparison_plot.ratioPad.set_yrange(0.80, 1.20)
             comparison_plot.add_and_plot(histo_list)
             comparison_plot.canvas.cd()
             if self.atlas_label:

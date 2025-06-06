@@ -13,3 +13,4 @@ class Plot:
         self.y_range = config.get("y_range", None)
         self.setlogy = config.get("setlogy", False)
         self.setlogx = config.get("setlogx", False)
+        self.y_range_ratio = config.get("y_range_ratio", None)
