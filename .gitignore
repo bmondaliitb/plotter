@@ -1,3 +1,4 @@
+run
 SimplePlotter/**/*config*.yaml
 SimplePlotter/Truth-Recoil-using-Rivet
 SimplePlotter/TopoClusterTruthStudy
@@ -12,3 +13,4 @@ SimplePlotter/TopoClusterTruthStudy
 **/*output1_wenu/
 **/*.swp
 **/*.cfg
+**/*.egg-info/
