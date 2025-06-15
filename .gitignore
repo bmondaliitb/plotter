@@ -1,3 +1,4 @@
+.idea
 run
 SimplePlotter/**/*config*.yaml
 SimplePlotter/Truth-Recoil-using-Rivet
