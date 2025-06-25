@@ -152,7 +152,6 @@ class Plotting:
             simpleTH2_plot.canvas.cd()
             if self.atlas_label_text:
                 atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-                atlas.ATLASLabel(0.22, 0.9, "Internal")
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
             simpleTH2_plot.save(f"{self.output_path}/{plot.name}.pdf")
