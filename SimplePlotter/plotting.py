@@ -19,7 +19,13 @@ class Plotting:
         self.plots = self._create_plots()
 
         # Get optional configurations
-        self.atlas_label = self.job_config.get("atlas_label", "")
+        atlas_label_config = self.job_config.get("atlas_label", "")
+        if isinstance(atlas_label_config, dict):
+            self.atlas_label_text = atlas_label_config.get("name", "")
+            self.atlas_label_pos = atlas_label_config.get("position", [])
+        else:
+            self.atlas_label_text = atlas_label_config
+            self.atlas_label_pos = [0.22, 0.9]
         self.plot_labels = self.job_config.get("plot_label", [])
         self.legend_position = self.job_config.get("legend_position", {})
         self.output_directory = self.job_config.get("output_directory", "output")
@@ -43,8 +49,8 @@ class Plotting:
             plots.append(plot_obj)
         return plots
 
-    def plot_simple(self, plots_simple):
-        for plot in plots_simple:
+    def plot_th1(self, plots_th1):
+        for plot in plots_th1:
             simple_plot = presets.simple(plot.name, plot.x_label, plot.y_label)
             histo_list = []
             for sample in self.samples:
@@ -65,8 +71,9 @@ class Plotting:
 
             simple_plot.add_and_plot(histo_list)
             simple_plot.canvas.cd()
-            if self.atlas_label:
-                atlas.ATLASLabel(0.22, 0.9, "Internal")
+            if self.atlas_label_text:
+                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
             # if x_range is set, use it
@@ -74,8 +81,8 @@ class Plotting:
                 simple_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             simple_plot.save(f"{self.output_path}/{plot.name}.pdf")
 
-    def plot_overlay(self, plots_overlay):
-        for plot in plots_overlay:
+    def plot_th1_ratio(self, plots_th1_ratio):
+        for plot in plots_th1_ratio:
             comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label)
             histo_list = []
             for sample in self.samples:
@@ -99,8 +106,8 @@ class Plotting:
                 comparison_plot.ratioPad.set_yrange(0.80, 1.20)
             comparison_plot.add_and_plot(histo_list)
             comparison_plot.canvas.cd()
-            if self.atlas_label:
-                atlas.ATLASLabel(0.22, 0.9, "Internal")
+            if self.atlas_label_text:
+                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
             # if x_range is set, use it
@@ -109,7 +116,7 @@ class Plotting:
             comparison_plot.save(f"{self.output_path}/{plot.name}.pdf")
 
 
-    def plot_simple_th2(self, plots_th2):
+    def plot_th2(self, plots_th2):
         for plot in plots_th2:
             simpleTH2_plot = presets.SimpleTH2(plot.name, plot.x_label, plot.y_label)
             histogram = None
@@ -136,10 +143,15 @@ class Plotting:
             if hasattr(plot, 'y_range') and plot.y_range is not None:
                 simpleTH2_plot.set_yrange(plot.y_range[0], plot.y_range[1])
 
-            simpleTH2_plot.set_zrange(0, 100) # hardcoded for now
+            #simpleTH2_plot.set_zrange(0, 100) # hardcoded for now
+            if hasattr(plot, 'z_range') and plot.z_range is not None:
+                simpleTH2_plot.set_zrange(plot.z_range[0], plot.z_range[1])
+            else:
+                simpleTH2_plot.set_zrange(0, 100)
 
             simpleTH2_plot.canvas.cd()
-            if self.atlas_label:
+            if self.atlas_label_text:
+                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
                 atlas.ATLASLabel(0.22, 0.9, "Internal")
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
@@ -155,13 +167,13 @@ class Plotting:
 
     def generate_plots(self):
         # create plot objects based on plot type
-        plots_simple = [plot for plot in self.plots if plot.type == "simple_th1"]
-        plots_overlay = [plot for plot in self.plots if plot.type == "overlay"]
+        plots_th1 = [plot for plot in self.plots if plot.type == "simple_th1"]
+        plots_th1_ratio = [plot for plot in self.plots if plot.type == "overlay"]
         plots_th2 = [plot for plot in self.plots if plot.type == "simple_th2"]
 
-        if plots_simple:
-            self.plot_simple(plots_simple)
-        if plots_overlay:
-            self.plot_overlay(plots_overlay)
+        if plots_th1 :
+            self.plot_th1(plots_th1)
+        if plots_th1_ratio:
+            self.plot_th1_ratio(plots_th1_ratio)
         if plots_th2:
-            self.plot_simple_th2(plots_th2)
+            self.plot_th2(plots_th2)
