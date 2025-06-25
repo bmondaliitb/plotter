@@ -5,7 +5,9 @@ Job:
   #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
   file_paths: # this is a list of files or wildcard patterns where the histograms are stored
     - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged.root"
-  atlas_label: "Internal" #0.22, 0.9
+  atlas_label: 
+    name: "Internal"
+    position: [20,89]
 
   # Define common styles
   CommonStyles: &CommonStyles
