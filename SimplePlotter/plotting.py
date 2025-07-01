@@ -35,6 +35,10 @@ class Plotting:
         if not os.path.exists(self.output_path):
             os.makedirs(self.output_path)
 
+        # save format
+        save_format_input = self.job_config.get("save_format", "png")
+        self.save_formats = [fmt.strip() for fmt in save_format_input.split(",")] if isinstance(save_format_input, str) else ["png"]
+
     def _create_samples(self, sample_configs):
         samples = []
         for sample_config in sample_configs:
@@ -79,7 +83,8 @@ class Plotting:
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 simple_plot.set_xrange(plot.x_range[0], plot.x_range[1])
-            simple_plot.save(f"{self.output_path}/{plot.name}.pdf")
+            for fmt in self.save_formats:
+                simple_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
 
     def plot_th1_ratio(self, plots_th1_ratio):
         for plot in plots_th1_ratio:
@@ -113,7 +118,8 @@ class Plotting:
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
-            comparison_plot.save(f"{self.output_path}/{plot.name}.pdf")
+            for fmt in self.save_formats:
+                comparison_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
 
 
     def plot_th2(self, plots_th2):
@@ -154,7 +160,8 @@ class Plotting:
                 atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
-            simpleTH2_plot.save(f"{self.output_path}/{plot.name}.pdf")
+            for fmt in self.save_formats:
+                simpleTH2_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
 
 
 
