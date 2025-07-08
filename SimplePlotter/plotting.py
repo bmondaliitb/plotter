@@ -171,6 +171,9 @@ class Plotting:
         hist.SetLineWidth(style_config.get('linewidth', 1))
         hist.SetMarkerStyle(style_config.get('markerstyle', 20))
 
+        if 'legend' in style_config:
+            hist.th.SetTitle(style_config['legend'])
+
     def generate_plots(self):
         # create plot objects based on plot type
         plots_th1 = [plot for plot in self.plots if plot.type == "simple_th1"]

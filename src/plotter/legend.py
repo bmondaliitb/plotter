@@ -50,11 +50,11 @@ class legend:
             if h.inlegend is False:
                 continue
             if "p" in h.drawoption:
-                self.tlegend.AddEntry(h.th, h.title, "p")
+                self.tlegend.AddEntry(h.th, h.th.GetTitle(), "p")
             elif h.fillcolor:
-                self.tlegend.AddEntry(h.th, h.title, "f")
+                self.tlegend.AddEntry(h.th, h.th.GetTitle(), "f")
             else:
-                self.tlegend.AddEntry(h.th, h.title, "l")
+                self.tlegend.AddEntry(h.th, h.th.GetTitle(), "l")
 
         # TODO: config?
         self.tlegend.SetBorderSize(0)
