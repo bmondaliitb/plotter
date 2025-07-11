@@ -1,19 +1,21 @@
 # Job block defines the output directory and the input file and common plot styles
 Job:
-  job_name: "Wmunu_13TeV_custom_daod"  # this is a folder name where the plots will be saved
-  output_directory: "fal_out_Wlnu/custom_daod/Wmunu_plots/"  # this is the output directory where the plots will be saved
-  #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
-  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
-    - "fal_out_Wlnu/custom_daod/Wmunu/output.root"
+  job_name: "Wmunu_13TeV_custom_daod"
+  output_directory: "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Wplusmunu_custom_daod/Plots/"
+  file_paths: 
+    - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Wplusmunu_custom_daod/Root-files/output.root"
   # add text block in the plot for example : sqrt(s) = 13 TeV
-  atlas_label: "Internal" #0.22, 0.9
+  atlas_label:
+    name: "Internal" #0.22, 0.9
+    position: [ 0.20, 0.89 ]
+
   plot_label:
-    - text: "W^{+}#rightarrow e^{+}#nu"
+    - text: "W^{+}#rightarrow #mu^{+}#nu"
       x: 0.22
-      y: 0.86
+      y: 0.85
     - text: ", #sqrt{s} = 13 TeV"
       x: 0.36
-      y: 0.86
+      y: 0.85
 
   # Define common styles
   CommonStyles: &CommonStyles
@@ -102,19 +104,13 @@ Sample:
 # Every block in the Plot block holds a plot
 Plot:
   - name: "uT"  # this is the name of the plot
-    samples:
-      - name: "uT_cut3"
-        linecolor: 1
-        <<: *CommonStyles
+    samples: [{name: "uT_cut3",linecolor: 1}]
     type: "overlay"  # different typs of plots: overlay, simple_th2, stack ...
     y_label: "Events"  # y-axis label
     x_range: [0, 150]  # x-axis range
 
   - name: "nmu"
-    samples:
-      - name: "nmu_cut3"
-        linecolor: 1
-        <<: *CommonStyles
+    samples: [{name: "nmu_cut3", linecolor: 1}]
     type: "overlay"
     y_label: "Events"
     x_range: [0, 5]
@@ -123,7 +119,6 @@ Plot:
     samples:
       - name: "muEta_cut3"
         linecolor: 1
-        <<: *CommonStyles
     type: "overlay"
     y_label: "Events"
     x_range: [-3, 3]
@@ -132,7 +127,6 @@ Plot:
     samples:
       - name: "muPt_cut3"
         linecolor: 1
-        <<: *CommonStyles
     type: "overlay"
     y_label: "Events"
     x_range: [0, 150]
@@ -141,7 +135,6 @@ Plot:
     samples:
       - name: "met_cut3"
         linecolor: 1
-        <<: *CommonStyles
     type: "overlay"
     y_label: "Events"
     x_range: [0, 150]
@@ -150,7 +143,6 @@ Plot:
     samples:
       - name: "mT_cut3"
         linecolor: 1
-        <<: *CommonStyles
     type: "overlay"
     y_label: "Events"
     x_range: [0, 150]
@@ -159,17 +151,14 @@ Plot:
     samples:
       - name: "ptcone20topT_cut3"
         linecolor: 1
-        <<: *CommonStyles
     type: "overlay"
 
   - name: "uParLepton"
     samples:
       - name: "uParLepton_cut3"
         linecolor: 1
-        <<: *CommonStyles
       - name: "uParLepton_cut4"
         linecolor: 2
-        <<: *CommonStyles
     type: "overlay"
     y_label: "Events"
     x_range: [-20,20]
@@ -177,169 +166,141 @@ Plot:
   - name: "uParLepton_vs_ptcone20"
     samples:
       - name: "uParLepton_vs_ptcone20_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "WpT_Reco_vs_ptcone20topT"
     samples:
       - name: "WpT_Reco_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPhi_vs_ptcone20topT"
     samples:
       - name: "muPhi_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muEta_vs_ptcone20topT"
     samples:
       - name: "muEta_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muEtaSF_vs_ptcone20topT"
     samples:
       - name: "muEtaSF_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPt_vs_ptcone20topT"
     samples:
       - name: "muPt_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "uT_vs_ptcone20topT"
     samples:
       - name: "uT_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "met_vs_ptcone20topT"
     samples:
       - name: "met_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "mT_vs_ptcone20topT"
     samples:
       - name: "mT_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "SET_vs_ptcone20topT"
     samples:
       - name: "SET_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "SETUE_vs_ptcone20topT"
     samples:
       - name: "SETUE_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "recoil_PAR_lep_vs_ptcone20topT"
     samples:
       - name: "recoil_PAR_lep_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
     y_label: "p_{T}^{cone20}/p_{T}"
 
   - name: "recoil_PERP_lep_vs_ptcone20topT"
     samples:
       - name: "recoil_PERP_lep_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
     y_label: "p_{T}^{cone20}/p_{T}"
 
   - name: "mT_ut1_vs_ptcone20topT"
     samples:
       - name: "mT_ut1_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "mT_ut2_vs_ptcone20topT"
     samples:
       - name: "mT_ut2_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "mT_ut3_vs_ptcone20topT"
     samples:
       - name: "mT_ut3_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "mT_ut4_vs_ptcone20topT"
     samples:
       - name: "mT_ut4_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "mT_ut5_vs_ptcone20topT"
     samples:
       - name: "mT_ut5_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPt_ut1_vs_ptcone20topT"
     samples:
       - name: "muPt_ut1_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPt_ut2_vs_ptcone20topT"
     samples:
       - name: "muPt_ut2_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPt_ut3_vs_ptcone20topT"
     samples:
       - name: "muPt_ut3_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPt_ut4_vs_ptcone20topT"
     samples:
       - name: "muPt_ut4_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "muPt_ut5_vs_ptcone20topT"
     samples:
       - name: "muPt_ut5_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "met_ut1_vs_ptcone20topT"
     samples:
       - name: "met_ut1_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "met_ut2_vs_ptcone20topT"
     samples:
       - name: "met_ut2_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "met_ut3_vs_ptcone20topT"
     samples:
       - name: "met_ut3_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "met_ut4_vs_ptcone20topT"
     samples:
       - name: "met_ut4_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
 
   - name: "met_ut5_vs_ptcone20topT"
     samples:
       - name: "met_ut5_vs_ptcone20topT_cut3"
-        <<: *CommonStyles
     type: "simple_th2"
