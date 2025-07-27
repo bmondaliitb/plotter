@@ -222,52 +222,10 @@ class Plotting:
             for plot_sample in plot.samples:
                 for sample in self.samples:
                     if sample.name == plot_sample["name"]:
-                        # Create a new canvas with standard dimensions if original has invalid dimensions
-                        original_canvas = sample.hist.canvas
-                        width = original_canvas.GetWindowWidth()
-                        height = original_canvas.GetWindowHeight()
-
-                        # Check if dimensions are valid, use defaults if not
-                        if width <= 0 or height <= 0:
-                            width = 800
-                            height = 600
-
-                        # Create new canvas
-                        new_canvas = ROOT.TCanvas(f"{plot.name}", f"{plot.name}", width, height)
+                        # Get original canvas
+                        new_canvas = sample.hist.canvas
                         new_canvas.cd()
-
-                        # Get all primitives from the original canvas and draw them
-                        primitives = original_canvas.GetListOfPrimitives()
-                        if primitives:
-                            for i in range(primitives.GetSize()):
-                                obj = primitives.At(i)
-                                if obj:
-                                    obj_copy = obj.Clone()
-                                    obj_copy.Draw(obj.GetOption())
-
-                        # Apply any custom labels from the plot configuration
-                        if plot.x_label:
-                            # Find histograms or graphs to set axis labels
-                            for i in range(primitives.GetSize()):
-                                obj = primitives.At(i)
-                                if obj and hasattr(obj, "GetXaxis"):
-                                    obj.GetXaxis().SetTitle(plot.x_label)
-                                # Set X-axis tick interval if specified
-                                if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:
-                                    xmin = obj.GetXaxis().GetXmin()
-                                    xmax = obj.GetXaxis().GetXmax()
-                                    if plot.x_range:
-                                        xmin, xmax = plot.x_range
-                                    self.apply_tick_interval(obj.GetXaxis(), plot.x_tick_interval, xmin, xmax)
-                                break
-
-                        if plot.y_label:
-                            # Find histograms or graphs to set axis labels
-                            for i in range(primitives.GetSize()):
-                                obj = primitives.At(i)
-                                if obj and hasattr(obj, "GetYaxis"):
-                                    obj.GetYaxis().SetTitle(plot.y_label)
-                                    break
+                        new_canvas.Draw()
 
                         # Add ATLAS label
                         if self.atlas_label_text:
