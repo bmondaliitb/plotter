@@ -22,8 +22,10 @@ class simple:
         yTitle: Optional[str] = "Events",
         isTH1: bool = True,
         autoY=True,
+        draw_legend= True,
     ):
         self.canvas = canvas(plotName)
+        self.draw_legend = draw_legend
 
         self.mainPad = pad(
             "main",
@@ -45,9 +47,10 @@ class simple:
         self.mainPad.plot_histos()
 
         self.canvas.tcan.cd()
-        self.leg = legend()
-        self.leg.add_histos(self.hs)
-        self.leg.create_and_draw()
+        if self.draw_legend:
+            self.leg = legend()
+            self.leg.add_histos(self.hs)
+            self.leg.create_and_draw()
 
     def logx(self, doLog=True):
         self.mainPad.logx(doLog)
@@ -295,6 +298,7 @@ class Comparison:
         ratioTitle: str = "Ratio",
         fraction: float = 0.3,
         show_nonEmptyOnly: bool = True,
+        draw_legend = True
     ):
         self.canvas = canvas(plotName)
 
@@ -314,6 +318,7 @@ class Comparison:
         self.ratioPad.set_title(xTitle, ratioTitle)
 
         self.nonEmpty = show_nonEmptyOnly
+        self.draw_legend = draw_legend
 
     def add_and_plot(self, histos: List[histo]):
         if len(histos) == 0:
@@ -371,9 +376,10 @@ class Comparison:
         self.ratioPad.plot_histos()
 
         self.canvas.tcan.cd()
-        self.leg = legend()
-        self.leg.add_histos(self.histos)
-        self.leg.create_and_draw()
+        if self.draw_legend:
+            self.leg = legend()
+            self.leg.add_histos(self.histos)
+            self.leg.create_and_draw()
 
     def set_xrange(self, min, max):
         self.mainPad.set_xrange(min, max)

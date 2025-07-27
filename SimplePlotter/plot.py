@@ -15,3 +15,4 @@ class Plot:
         self.setlogy = config.get("setlogy", False)
         self.setlogx = config.get("setlogx", False)
         self.y_range_ratio = config.get("y_range_ratio", None)
+        self.x_tick_interval = config.get("x_tick_interval", None)

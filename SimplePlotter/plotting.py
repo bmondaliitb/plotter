@@ -4,6 +4,7 @@ from sample import Sample
 from plot import Plot
 from plotter import presets
 from plotter import atlas
+from plotter import cmsstyle
 import ROOT
 
 log = logging.getLogger(__name__)
@@ -18,6 +19,9 @@ class Plotting:
         # Create actual objects from configurations
         self.samples = self._create_samples(self.sample_configs)
         self.plots = self._create_plots()
+
+        # set plot style
+        self.style = self.job_config.get("style", "atlas").lower()
 
         # Get optional configurations
         atlas_label_config = self.job_config.get("atlas_label", "")
@@ -56,7 +60,9 @@ class Plotting:
 
     def plot_th1(self, plots_th1):
         for plot in plots_th1:
-            simple_plot = presets.simple(plot.name, plot.x_label, plot.y_label)
+            draw_legend = plot.config.get("draw_legend", True)
+            simple_plot = presets.simple(plot.name, plot.x_label, plot.y_label,
+                                         draw_legend=draw_legend)
             histo_list = []
             for sample in self.samples:
                 for plot_sample in plot.samples:
@@ -76,8 +82,21 @@ class Plotting:
 
             simple_plot.add_and_plot(histo_list)
             simple_plot.canvas.cd()
+            # Set X-axis tick interval if specified
+            if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:
+                for hist in histo_list:
+                    xmin = hist.th.GetXaxis().GetXmin()
+                    xmax = hist.th.GetXaxis().GetXmax()
+                    if plot.x_range:
+                        xmin, xmax = plot.x_range
+                    self.apply_tick_interval(hist.th.GetXaxis(), plot.x_tick_interval, xmin, xmax)
+                    break  # Apply to first histogram only
+
             if self.atlas_label_text:
-                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if(self.style == "atlas"):
+                    atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if (self.style == "cms"):
+                    cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
@@ -85,11 +104,13 @@ class Plotting:
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 simple_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             for fmt in self.save_formats:
-                simple_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
+                simple_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
 
     def plot_th1_ratio(self, plots_th1_ratio):
         for plot in plots_th1_ratio:
-            comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label)
+            draw_legend = plot.config.get("draw_legend", True)
+            comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label,
+                                                 draw_legend=draw_legend)
             histo_list = []
             for sample in self.samples:
                 for plot_sample in plot.samples:
@@ -112,15 +133,35 @@ class Plotting:
                 comparison_plot.ratioPad.set_yrange(0.80, 1.20)
             comparison_plot.add_and_plot(histo_list)
             comparison_plot.canvas.cd()
+            # Set X-axis tick interval if specified
+            if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:
+                # Apply to both main pad and ratio pad histograms
+                for hist in histo_list:
+                    xmin = hist.th.GetXaxis().GetXmin()
+                    xmax = hist.th.GetXaxis().GetXmax()
+                    if plot.x_range:
+                        xmin, xmax = plot.x_range
+                    self.apply_tick_interval(hist.th.GetXaxis(), plot.x_tick_interval, xmin, xmax)
+                    break  # Apply to first histogram only
+
+                # Also apply to ratio pad histograms
+                for obj in comparison_plot.ratioPad.primitives:
+                    if hasattr(obj, 'GetXaxis'):
+                        self.apply_tick_interval(obj.GetXaxis(), plot.x_tick_interval, xmin, xmax)
+                        break
+
             if self.atlas_label_text:
-                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if(self.style == "atlas"):
+                    atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if (self.style == "cms"):
+                    cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             for fmt in self.save_formats:
-                comparison_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
+                comparison_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
 
 
     def plot_th2(self, plots_th2):
@@ -145,6 +186,14 @@ class Plotting:
             simpleTH2_plot.mainPad.drawoption = "colz"
             simpleTH2_plot.add_and_plot(histogram)
 
+            # Set X-axis tick interval if specified
+            if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:
+                xmin = histogram.th.GetXaxis().GetXmin()
+                xmax = histogram.th.GetXaxis().GetXmax()
+                if plot.x_range:
+                    xmin, xmax = plot.x_range
+                self.apply_tick_interval(histogram.th.GetXaxis(), plot.x_tick_interval, xmin, xmax)
+
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 simpleTH2_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             if hasattr(plot, 'y_range') and plot.y_range is not None:
@@ -158,11 +207,14 @@ class Plotting:
 
             simpleTH2_plot.canvas.cd()
             if self.atlas_label_text:
-                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if(self.style == "atlas"):
+                    atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if (self.style == "cms"):
+                    cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
             for fmt in self.save_formats:
-                simpleTH2_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
+                simpleTH2_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
 
     # plot canvas
     def plot_canvas(self, plots_canvas):
@@ -200,7 +252,14 @@ class Plotting:
                                 obj = primitives.At(i)
                                 if obj and hasattr(obj, "GetXaxis"):
                                     obj.GetXaxis().SetTitle(plot.x_label)
-                                    break
+                                # Set X-axis tick interval if specified
+                                if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:
+                                    xmin = obj.GetXaxis().GetXmin()
+                                    xmax = obj.GetXaxis().GetXmax()
+                                    if plot.x_range:
+                                        xmin, xmax = plot.x_range
+                                    self.apply_tick_interval(obj.GetXaxis(), plot.x_tick_interval, xmin, xmax)
+                                break
 
                         if plot.y_label:
                             # Find histograms or graphs to set axis labels
@@ -212,7 +271,10 @@ class Plotting:
 
                         # Add ATLAS label
                         if self.atlas_label_text:
-                            atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                            if(self.style == "atlas"):
+                                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                            if (self.style == "cms"):
+                                cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
                         # Add custom plot labels
                         for label in self.plot_labels:
@@ -223,7 +285,7 @@ class Plotting:
 
                         # Save the canvas
                         for fmt in self.save_formats:
-                            new_canvas.SaveAs(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
+                            new_canvas.SaveAs(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
 
     def apply_style(self, hist, style_config):
         hist.SetLineColor(style_config.get('linecolor', 1))
@@ -233,6 +295,15 @@ class Plotting:
 
         if 'legend' in style_config:
             hist.th.SetTitle(style_config['legend'])
+
+    def apply_tick_interval(self, axis, interval, xmin, xmax):
+        if interval is not None:
+            axis.SetNdivisions(-1)  # Disable automatic divisions
+            # Calculate number of divisions based on interval
+            ndiv = int((xmax - xmin) / interval)
+            # Ensure a reasonable number of divisions
+            ndiv = max(1, min(ndiv, 20))
+            axis.SetNdivisions(ndiv, 0, 0, False)
 
     def generate_plots(self):
         # create plot objects based on plot type

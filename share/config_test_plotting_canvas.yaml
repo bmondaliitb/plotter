@@ -28,4 +28,6 @@ Plot:
   - name: "MyCanvasPlot"
     samples: [{name: "MyCanvasPlot"}]
     type: "canvas"
+    x_tick_interval: 2000  # This will set ticks at intervals of 10
+
 
