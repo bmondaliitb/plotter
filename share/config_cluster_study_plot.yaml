@@ -4,7 +4,7 @@ Job:
   job_name: "ClusterStudyPlots"  # this is a folder name where the plots will be saved
   #job_name: "ClusterStudyPlots_high_PU_settings"  # this is a folder name where the plots will be saved
   output_directory: "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Plots/"
-  save_format: "png" #, root"  # this is the format of the output files"
+  save_format: "png, root"  # this is the format of the output files"
   #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
   file_paths: # this is a list of files or wildcard patterns where the histograms are stored
     - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_low_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r11165.root"

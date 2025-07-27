@@ -6,14 +6,34 @@ from plotter.tfile2 import TFile2 as tfile2
 from plotter.histo import histo
 from plotter.histo import histo2D
 
+from plotter.canvas import canvas
+
+class Canvas:
+    def __init__(self, name, canvas_obj):
+        self.name = name
+        self.canvas = canvas_obj
+        self.th = canvas_obj  # For compatibility with the existing code
+
+    def SetLineColor(self, color):
+        pass  # Canvas doesn't have line color
+
+    def SetLineStyle(self, style):
+        pass  # Canvas doesn't have line style
+
+    def SetLineWidth(self, width):
+        pass  # Canvas doesn't have line width
+
+    def SetMarkerStyle(self, style):
+        pass  # Canvas doesn't have marker style
+
 class Sample:
     def __init__(self, sample_config, job_config):
         self.name = sample_config["name"]
-        self.files = self._expand_file_paths(sample_config.get("file_paths", job_config["file_paths"])) # if file_paths not set in sample, use job file_paths
+        self.files = self._expand_file_paths(sample_config.get("file_paths", job_config["file_paths"]))
         self.hist_name = sample_config["variable"]
         self.normalize = sample_config.get("normalize", False)
         self.hist = self.load_histogram()
-        if self.normalize:
+        if self.normalize and hasattr(self.hist, "th") and not isinstance(self.hist.th, ROOT.TCanvas):
             self.normalize_histogram()
 
     def _expand_file_paths(self, file_paths):
@@ -30,20 +50,30 @@ class Sample:
         hist = None
         for file_path in self.files:
             root_file = tfile2(file_path)
-            histogram = root_file.Get(self.hist_name)
-            if not histogram:
-                print(f"Error: Histogram '{self.hist_name}' not found in file '{file_path}'")
+            obj = root_file.Get(self.hist_name)
+            if not obj:
+                print(f"Error: Object '{self.hist_name}' not found in file '{file_path}'")
                 sys.exit(1)
-            if isinstance(histogram, ROOT.TH2):
+
+            if isinstance(obj, ROOT.TCanvas):
+                # Handle canvas objects
                 if hist is None:
-                    hist = histo2D(self.name, histogram)
+                    hist = Canvas(self.name, obj.Clone())
                 else:
-                    hist.th.Add(histogram)
-            elif isinstance(histogram, ROOT.TH1):
+                    print(f"Warning: Cannot add multiple canvas objects for '{self.name}'")
+            elif isinstance(obj, ROOT.TH2):
                 if hist is None:
-                    hist = histo(self.name, histogram)
+                    hist = histo2D(self.name, obj)
                 else:
-                    hist.th.Add(histogram)
+                    hist.th.Add(obj)
+            elif isinstance(obj, ROOT.TH1):
+                if hist is None:
+                    hist = histo(self.name, obj)
+                else:
+                    hist.th.Add(obj)
+            else:
+                print(f"Warning: Object '{self.hist_name}' is not a histogram or canvas")
+
         return hist
 
     def normalize_histogram(self):

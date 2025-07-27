@@ -4,6 +4,7 @@ from sample import Sample
 from plot import Plot
 from plotter import presets
 from plotter import atlas
+import ROOT
 
 log = logging.getLogger(__name__)
 
@@ -163,7 +164,66 @@ class Plotting:
             for fmt in self.save_formats:
                 simpleTH2_plot.save(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
 
+    # plot canvas
+    def plot_canvas(self, plots_canvas):
+        for plot in plots_canvas:
+            for plot_sample in plot.samples:
+                for sample in self.samples:
+                    if sample.name == plot_sample["name"]:
+                        # Create a new canvas with standard dimensions if original has invalid dimensions
+                        original_canvas = sample.hist.canvas
+                        width = original_canvas.GetWindowWidth()
+                        height = original_canvas.GetWindowHeight()
 
+                        # Check if dimensions are valid, use defaults if not
+                        if width <= 0 or height <= 0:
+                            width = 800
+                            height = 600
+
+                        # Create new canvas
+                        new_canvas = ROOT.TCanvas(f"{plot.name}", f"{plot.name}", width, height)
+                        new_canvas.cd()
+
+                        # Get all primitives from the original canvas and draw them
+                        primitives = original_canvas.GetListOfPrimitives()
+                        if primitives:
+                            for i in range(primitives.GetSize()):
+                                obj = primitives.At(i)
+                                if obj:
+                                    obj_copy = obj.Clone()
+                                    obj_copy.Draw(obj.GetOption())
+
+                        # Apply any custom labels from the plot configuration
+                        if plot.x_label:
+                            # Find histograms or graphs to set axis labels
+                            for i in range(primitives.GetSize()):
+                                obj = primitives.At(i)
+                                if obj and hasattr(obj, "GetXaxis"):
+                                    obj.GetXaxis().SetTitle(plot.x_label)
+                                    break
+
+                        if plot.y_label:
+                            # Find histograms or graphs to set axis labels
+                            for i in range(primitives.GetSize()):
+                                obj = primitives.At(i)
+                                if obj and hasattr(obj, "GetYaxis"):
+                                    obj.GetYaxis().SetTitle(plot.y_label)
+                                    break
+
+                        # Add ATLAS label
+                        if self.atlas_label_text:
+                            atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+
+                        # Add custom plot labels
+                        for label in self.plot_labels:
+                            atlas.add_text(label["x"], label["y"], label["text"])
+
+                        # Update the canvas
+                        new_canvas.Update()
+
+                        # Save the canvas
+                        for fmt in self.save_formats:
+                            new_canvas.SaveAs(f"{self.output_path}/{plot.name}.{self.job_config['job_name']}.{fmt}")
 
     def apply_style(self, hist, style_config):
         hist.SetLineColor(style_config.get('linecolor', 1))
@@ -179,6 +239,7 @@ class Plotting:
         plots_th1 = [plot for plot in self.plots if plot.type == "simple_th1"]
         plots_th1_ratio = [plot for plot in self.plots if plot.type == "overlay"]
         plots_th2 = [plot for plot in self.plots if plot.type == "simple_th2"]
+        plots_canvas = [plot for plot in self.plots if plot.type == "canvas"]
 
         if plots_th1 :
             self.plot_th1(plots_th1)
@@ -186,3 +247,5 @@ class Plotting:
             self.plot_th1_ratio(plots_th1_ratio)
         if plots_th2:
             self.plot_th2(plots_th2)
+        if plots_canvas:
+            self.plot_canvas(plots_canvas)

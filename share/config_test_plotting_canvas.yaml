@@ -1,0 +1,31 @@
+# This is a configuration file used for plotting
+# simple histograms from the cluster truth study
+Job:
+  job_name: "Test"  # this is a folder name where the plots will be saved
+  output_directory: "/mnt/nvme0n1p4/HEP/Work/Project-W-Z/Plotter/plotter/run/Test-plotting-canvas/Plots/"
+  save_format: "png"  # this is the format of the output files"
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/mnt/nvme0n1p4/HEP/Work/Project-W-Z/Plotter/plotter/run/Test-plotting-canvas/Root-files/CalibratedEnergy.ClusterStudyPlots.root"
+
+  atlas_label: "" # this will plot in default position; if you want to change the position use the below approach; for removing atlas label use "" string
+  #atlas_label:
+  #  name: "Internal" #0.22, 0.9
+  #  position: [0.20, 0.89]
+
+  # Define common styles
+  # its applied automatically to all histograms
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "MyCanvasPlot"
+    variable: "CalibratedEnergy_6aieN6eUuQSYJmf6nY9g4Y"
+
+Plot:
+  - name: "MyCanvasPlot"
+    samples: [{name: "MyCanvasPlot"}]
+    type: "canvas"
+
