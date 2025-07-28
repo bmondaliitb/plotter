@@ -101,6 +101,7 @@ def CmsText(x: float = 0.15, y: float = 0.94, text: str = "",
     l.SetTextColor(color)
     l.SetTextAlign(align)
     l.DrawLatex(x, y, "CMS")
+    delx = 0.090 * 696 * ROOT.gPad.GetWh() / (472 * ROOT.gPad.GetWw())
 
     if text:
         p = ROOT.TLatex()
@@ -109,7 +110,7 @@ def CmsText(x: float = 0.15, y: float = 0.94, text: str = "",
         p.SetTextSize(0.045)
         p.SetTextColor(color)
         p.SetTextAlign(align)
-        p.DrawLatex(x + 0.15, y, text)
+        p.DrawLatex(x + delx, y, text)
 
 def add_lumi_text(x: float = 0.9, y: float = 0.94, lumi: float = 0,
                   energy: int = 13, unit: str = "fb", align: int = 31):
