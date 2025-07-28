@@ -233,6 +233,29 @@ class Plotting:
                         # Get original canvas
                         new_canvas = sample.hist.canvas
                         new_canvas.cd()
+                        new_canvas.Draw()
+
+                        # Find the histogram or graph in the canvas
+                        for obj in new_canvas.GetListOfPrimitives():
+                            # Check if object has axes
+                            if hasattr(obj, 'GetXaxis') and hasattr(obj, 'GetYaxis'):
+                                # Set axis labels if provided in plot configuration
+                                if plot.x_label:
+                                    obj.GetXaxis().SetTitle(plot.x_label)
+                                if plot.y_label:
+                                    obj.GetYaxis().SetTitle(plot.y_label)
+                                # Apply axis ranges if specified
+                                if hasattr(plot, 'x_range') and plot.x_range is not None:
+                                    obj.GetXaxis().SetRangeUser(plot.x_range[0], plot.x_range[1])
+                                if hasattr(plot, 'y_range') and plot.y_range is not None:
+                                    obj.GetYaxis().SetRangeUser(plot.y_range[0], plot.y_range[1])
+                                # Apply tick interval if specified
+                                if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:
+                                    xmin = obj.GetXaxis().GetXmin()
+                                    xmax = obj.GetXaxis().GetXmax()
+                                    if plot.x_range:
+                                        xmin, xmax = plot.x_range
+                                    self.apply_tick_interval(obj.GetXaxis(), plot.x_tick_interval, xmin, xmax)
 
                         # Add ATLAS label
                         if self.atlas_label_text:
