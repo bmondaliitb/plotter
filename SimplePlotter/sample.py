@@ -58,7 +58,7 @@ class Sample:
             if isinstance(obj, ROOT.TCanvas):
                 # Handle canvas objects
                 if hist is None:
-                    hist = Canvas(self.name, obj.Clone())
+                    hist = Canvas(self.name, obj)
                 else:
                     print(f"Warning: Cannot add multiple canvas objects for '{self.name}'")
             elif isinstance(obj, ROOT.TH2):

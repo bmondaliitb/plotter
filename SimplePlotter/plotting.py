@@ -6,6 +6,8 @@ from plotter import presets
 from plotter import atlas
 from plotter import cmsstyle
 import ROOT
+from plotter.atlas import *
+from plotter.cmsstyle import *
 
 log = logging.getLogger(__name__)
 
@@ -94,8 +96,10 @@ class Plotting:
 
             if self.atlas_label_text:
                 if(self.style == "atlas"):
+                    SetAtlasStyle()
                     atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
                 if (self.style == "cms"):
+                    SetCmsStyle()
                     cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
             for label in self.plot_labels:
@@ -152,8 +156,10 @@ class Plotting:
 
             if self.atlas_label_text:
                 if(self.style == "atlas"):
+                    SetAtlasStyle()
                     atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
                 if (self.style == "cms"):
+                    SetCmsStyle()
                     cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
@@ -208,8 +214,10 @@ class Plotting:
             simpleTH2_plot.canvas.cd()
             if self.atlas_label_text:
                 if(self.style == "atlas"):
+                    SetAtlasStyle()
                     atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
                 if (self.style == "cms"):
+                    SetCmsStyle()
                     cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
                 atlas.add_text(label["x"], label["y"], label["text"])
@@ -225,13 +233,14 @@ class Plotting:
                         # Get original canvas
                         new_canvas = sample.hist.canvas
                         new_canvas.cd()
-                        new_canvas.Draw()
 
                         # Add ATLAS label
                         if self.atlas_label_text:
                             if(self.style == "atlas"):
+                                SetAtlasStyle()
                                 atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
                             if (self.style == "cms"):
+                                SetCmsStyle()
                                 cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
                         # Add custom plot labels
