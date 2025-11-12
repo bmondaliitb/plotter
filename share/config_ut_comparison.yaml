@@ -1,0 +1,103 @@
+# Job block defines the output directory and the input file and common plot styles
+Job:
+  job_name: "ut-comparison"
+  output_directory: "/mnt/nvme0n1p4/HEP/Work/Project-W-Z/Plotter/plotter/run/recoil-study/plot/" 
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/mnt/nvme0n1p4/HEP/Work/Project-W-Z/Plotter/plotter/run/recoil-study/root-files/output.root"
+  atlas_label: "Internal"
+
+  # Define common styles
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+## Histogram definitions
+## KEY: TH1D      mu_pt;1 Leading muon p_{T}
+## KEY: TH1D      mu_eta;1        Leading muon #eta
+## KEY: TH1D      ut_pt_TSTMet;1  u_pt (TSTMet)
+## KEY: TH1D      ut_pt_em;1      u_pt (EM (medium))
+## KEY: TH1D      ut_pt_lc;1      u_pt (LC (medium))
+## KEY: TH1D      ut_pt_ml;1      u_pt (ML (medium))
+## KEY: TH1D      ut_pt_pfo_lc;1  u_pt (pfo (medium))
+## KEY: TH1D      ut_pt_pfo_em;1  u_pt (pfoEM (medium))
+## KEY: TH1D      ut_pt_pfo_ml;1  u_pt (pfoML (medium))
+## KEY: TH1D      ut_pt_pfo_mlcentral_lcforward;1 u_pt (pfoMLCentralLCForward (medium))
+## KEY: TH1D      ut_pt_pfo_ml_emforward;1        u_pt (pfoMLEMForward (medium))
+## KEY: TH1D      ut_pt_nonInt;1  u_pt (truth, nonInt)
+## KEY: TH1D      ut_pt_Int;1     u_pt (truth, Int)
+## KEY: TH1D      ut_pt_IntOut;1  u_pt (truth, IntOut)
+## KEY: TH1D      ut_pt_truth;1   u_pt (truth, Truth)
+## KEY: TH1D      z_mass;1        Di-muon mass
+## KEY: TH1D      z_pt;1  Z boson p_{T}
+## KEY: TH1D      u_perp_pfo_lc;1 u_{#perp} (pfo (medium))
+## KEY: TH1D      u_perp_pfo_ml;1 u_{#perp} (pfoML (medium))
+# Sample block holds information of individual histograms
+Sample:
+  - name: "ut_pt_clus_em"
+    variable: recoil/all/ut_pt_em
+  - name: "ut_pt_clus_lc"
+    variable: recoil/all/ut_pt_lc
+  - name: "ut_pt_clus_ml"
+    variable: recoil/all/ut_pt_ml
+
+  - name: "ut_pt_pfo_lc"
+    variable: recoil/all/ut_pt_pfo_lc
+  - name: "ut_pt_pfo_em"
+    variable: recoil/all/ut_pt_pfo_em
+  - name: "ut_pt_pfo_ml"
+    variable: recoil/all/ut_pt_pfo_ml
+
+  - name: "ut_pt_pfo_mlcentral_lcforward"
+    variable: recoil/all/ut_pt_pfo_mlcentral_lcforward
+  - name: "ut_pt_pfo_ml_emforward"
+    variable: recoil/all/ut_pt_pfo_ml_emforward
+
+  - name: "ut_pfo_truth_Int"
+    variable: recoil/all/ut_pt_nonInt
+  - name: "u_perp_pfo_lc"
+    variable: recoil/all/u_perp_pfo_lc
+  - name: "u_perp_pfo_ml"
+    variable: recoil/all/u_perp_pfo_ml
+
+Plot:
+  # ut_pt pfo at different scales
+  - name: "ut_pt_pfo_comparison"
+    samples: [{name: "ut_pt_pfo_lc", linecolor: 633, legend: "pfo (LC)"}, {name: "ut_pt_pfo_ml", linecolor: 601, legend: "pfo (ML+EMforward)"}, {name: "ut_pt_pfo_em", linecolor: 417, legend: "pfo (EM)"}, {name: "ut_pfo_truth_Int", linecolor: 800, legend: "pfo (truth fid.)"}]
+    type: "overlay"
+    x_range: [0, 200]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  # ut_pt clusters at different scales
+  - name: "ut_pt_clusters_comparison"
+    samples: [{name: "ut_pt_clus_lc", linecolor: 633, legend: "clusters (LC)"}, {name: "ut_pt_clus_ml", linecolor: 601, legend: "clusters (ML+EMforward)"}, {name: "ut_pt_clus_em", linecolor: 417, legend: "clusters (EM)"}, {name: "ut_pfo_truth_Int", linecolor: 800, legend: "clusters (truth fid.)"}]
+    type: "overlay"
+    x_range: [0, 200]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  # other comparisons
+  - name: "ut_pt_pfo_comparison_extended"
+    #samples: [{name: "ut_pt_pfo_lc_lcforward", linecolor: 633, legend: "pfo (LC)"}, {name: "ut_pt_pfo_ml_emforward", linecolor: 601, legend: "pfo (ML+EMforward)"}, {name: "ut_pt_pfo_mlcentral_lcforward", linecolor: 417, legend: "pfo (ML+LCforward)"}, {name: "ut_pfo_truth_Int", linecolor: 800, legend: "pfo (truth fid.)"}]
+    samples: [{name: "ut_pt_pfo_ml_emforward", linecolor: 601, legend: "pfo (ML+EMforward)"}, {name: "ut_pt_pfo_mlcentral_lcforward", linecolor: 417, legend: "pfo (ML+LCforward)"}, {name: "ut_pfo_truth_Int", linecolor: 800, legend: "pfo (truth fid.)"}]
+    type: "overlay"
+    x_range: [0, 200]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  # u_perp comparison
+  - name: "u_perp_pfo_comparison"
+    samples: [{name: "u_perp_pfo_lc", linecolor: 633, legend: "u_{#perp} (pfo LC)"}, {name: "u_perp_pfo_ml", linecolor: 601, legend: "u_{#perp} (pfo ML)"}]
+    type: "overlay"
+    x_range: [-30, 30]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{#perp} (GeV)"
+    y_label: "A.U"
+
+
+
+
