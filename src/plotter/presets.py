@@ -396,7 +396,7 @@ class Comparison:
 class SimpleTH2:
     def __init__(self, plotName: str = "", xTitle: Optional[str] = None, yTitle: Optional[str] = None):
         self.canvas = canvas(plotName)
-        self.mainPad = pad("main", configPath=loader.path() + "configs/pad.json")
+        self.mainPad = pad("main", configPath=loader.path() + "configs/pad.json", isTH1=False)
         self.canvas.add_pad(self.mainPad)
         self.mainPad.set_title(xTitle, yTitle)
 

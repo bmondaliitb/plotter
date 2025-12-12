@@ -54,7 +54,7 @@ class pad:
         self.yTitle: Optional[str] = None
 
         self.yMin = 0.0
-        self.yMinZero = 0.0  # for log, minimum >0
+        self.yMinZero = 1e-6  # for log, minimum >0
         self.yMax = 1.0
         self.xMin = 0.0
         self.xMax = 1.0

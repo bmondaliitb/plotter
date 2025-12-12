@@ -187,6 +187,15 @@ class Plotting:
                 return  # Safely exit the function
 
             simpleTH2_plot.mainPad.drawoption = "colz"
+
+            # Set log scale before plotting
+            if getattr(plot, "setlogx", False):
+                simpleTH2_plot.mainPad.logx()
+            if getattr(plot, "setlogy", False):
+                simpleTH2_plot.mainPad.logy()
+            if getattr(plot, "setlogz", False):
+                simpleTH2_plot.mainPad.logz()
+
             simpleTH2_plot.add_and_plot(histogram)
 
             # Set X-axis tick interval if specified
@@ -201,14 +210,15 @@ class Plotting:
                 simpleTH2_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             if hasattr(plot, 'y_range') and plot.y_range is not None:
                 simpleTH2_plot.set_yrange(plot.y_range[0], plot.y_range[1])
-
-            #simpleTH2_plot.set_zrange(0, 100) # hardcoded for now
             if hasattr(plot, 'z_range') and plot.z_range is not None:
                 simpleTH2_plot.set_zrange(plot.z_range[0], plot.z_range[1])
             else:
-                simpleTH2_plot.set_zrange(0, 100)
+                zmin = histogram.th.GetMinimum()
+                zmax = histogram.th.GetMaximum()
+                simpleTH2_plot.set_zrange(zmin, zmax)
 
             simpleTH2_plot.canvas.cd()
+
             if self.atlas_label_text:
                 if(self.style == "atlas"):
                     atlas.SetAtlasStyle()
