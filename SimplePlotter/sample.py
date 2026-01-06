@@ -1,30 +1,16 @@
-import glob
-import sys
-import ROOT
-from plotter.dataset import dataset
-from plotter.tfile2 import TFile2 as tfile2
-from plotter.histo import histo
-from plotter.histo import histo2D
-
-from plotter.canvas import canvas
-
-class Canvas:
-    def __init__(self, name, canvas_obj):
-        self.name = name
-        self.canvas = canvas_obj
-        self.th = canvas_obj  # For compatibility with the existing code
-
-    def SetLineColor(self, color):
-        pass  # Canvas doesn't have line color
-
-    def SetLineStyle(self, style):
-        pass  # Canvas doesn't have line style
-
-    def SetLineWidth(self, width):
-        pass  # Canvas doesn't have line width
-
-    def SetMarkerStyle(self, style):
-        pass  # Canvas doesn't have marker style
+import glob                                                                                                                
+import sys                                                                                                                 
+import ROOT                                                                                                                
+from root_io import RootFile                                                                                              
+from histogram import Histogram1D, Histogram2D                                                                            
+                                                                                                                           
+class CanvasWrapper:                                                                                                       
+    """Wrapper so canvas can be treated like a histogram holder."""                                                        
+    def __init__(self, name, canvas):                                                                                      
+        self.name = name                                                                                                   
+        self.canvas = canvas                                                                                               
+        self.th = canvas  # for compatibility                                                                              
+        self.legend_title = name
 
 class Sample:
     def __init__(self, sample_config, job_config):
@@ -37,47 +23,56 @@ class Sample:
             self.normalize_histogram()
 
     def _expand_file_paths(self, file_paths):
-        expanded_files = []
+        expanded = []
         for path in file_paths:
-            matched_files = glob.glob(path)
-            if not matched_files:
+            matches = glob.glob(path)
+            if not matches:
                 print(f"Error: No files found matching path '{path}'")
                 sys.exit(1)
-            expanded_files.extend(matched_files)
-        return expanded_files
+            expanded.extend(matches)
+        return expanded
 
     def load_histogram(self):
         hist = None
         for file_path in self.files:
-            root_file = tfile2(file_path)
-            obj = root_file.Get(self.hist_name)
-            if not obj:
-                print(f"Error: Object '{self.hist_name}' not found in file '{file_path}'")
-                sys.exit(1)
+            with RootFile(file_path) as f:
+                obj = f.Get(self.hist_name)
+                if not obj:
+                    print(f"Error: Object '{self.hist_name}' not found in file '{file_path}'")
+                    sys.exit(1)
 
-            if isinstance(obj, ROOT.TCanvas):
-                # Handle canvas objects
+                cloned = None
+                if isinstance(obj, ROOT.TCanvas):
+                    cloned = obj.Clone()
+                elif isinstance(obj, ROOT.TH2):
+                    cloned = obj.Clone()
+                    cloned.SetDirectory(0)
+                elif isinstance(obj, ROOT.TH1):
+                    cloned = obj.Clone()
+                    cloned.SetDirectory(0)
+                else:
+                    print(f"Warning: Object '{self.hist_name}' is not a histogram or canvas")
+                    continue
+
+            # use the cloned, detached object after the file is closed
+            if isinstance(cloned, ROOT.TCanvas):
                 if hist is None:
-                    hist = Canvas(self.name, obj)
+                    hist = CanvasWrapper(self.name, cloned)
                 else:
                     print(f"Warning: Cannot add multiple canvas objects for '{self.name}'")
-            elif isinstance(obj, ROOT.TH2):
+            elif isinstance(cloned, ROOT.TH2):
                 if hist is None:
-                    hist = histo2D(self.name, obj)
+                    hist = Histogram2D(self.name, cloned)
                 else:
-                    hist.th.Add(obj)
-            elif isinstance(obj, ROOT.TH1):
+                    hist.th.Add(cloned)
+            elif isinstance(cloned, ROOT.TH1):
                 if hist is None:
-                    hist = histo(self.name, obj)
+                    hist = Histogram1D(self.name, cloned)
                 else:
-                    hist.th.Add(obj)
-            else:
-                print(f"Warning: Object '{self.hist_name}' is not a histogram or canvas")
-
+                    hist.th.Add(cloned)
         return hist
 
     def normalize_histogram(self):
-        if hasattr(self.hist, "th"):
-            integral = self.hist.th.Integral()
-            if integral != 0:
-                self.hist.th.Scale(1.0 / integral)
+        integral = self.hist.th.Integral()
+        if integral != 0:
+            self.hist.th.Scale(1.0 / integral)

@@ -3,7 +3,6 @@ from config_reader import ConfigReader
 from plotting import Plotting
 import argparse
 
-from plotter.atlas import SetAtlasStyle
 import ROOT
 
 if __name__=="__main__":

@@ -2,9 +2,16 @@ import os
 import logging
 from sample import Sample
 from plot import Plot
-from plotter import presets
-from plotter import atlas
-from plotter import cmsstyle
+
+from presets import SimplePlot, ComparisonPlot, SimpleTH2Plot
+from style import (
+    set_atlas_style,
+    set_cms_style,
+    atlas_label,
+    cms_label,
+    add_text,
+)
+
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +67,7 @@ class Plotting:
     def plot_th1(self, plots_th1):
         for plot in plots_th1:
             draw_legend = plot.config.get("draw_legend", True)
-            simple_plot = presets.simple(plot.name, plot.x_label, plot.y_label,
+            simple_plot = SimplePlot(plot.name, plot.x_label, plot.y_label,
                                          draw_legend=draw_legend)
             histo_list = []
             for sample in self.samples:
@@ -92,15 +99,15 @@ class Plotting:
                     break  # Apply to first histogram only
 
             if self.atlas_label_text:
-                if(self.style == "atlas"):
-                    atlas.SetAtlasStyle()
-                    atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-                if (self.style == "cms"):
-                    cmsstyle.SetCmsStyle()
-                    cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if self.style == "atlas":
+                    set_atlas_style()
+                    atlas_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                elif self.style == "cms":
+                    set_cms_style()
+                    cms_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
             for label in self.plot_labels:
-                atlas.add_text(label["x"], label["y"], label["text"])
+                add_text(label["x"], label["y"], label["text"])
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 simple_plot.set_xrange(plot.x_range[0], plot.x_range[1])
@@ -110,7 +117,7 @@ class Plotting:
     def plot_th1_ratio(self, plots_th1_ratio):
         for plot in plots_th1_ratio:
             draw_legend = plot.config.get("draw_legend", True)
-            comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label,
+            comparison_plot = ComparisonPlot(plot.name, plot.x_label, plot.y_label,
                                                  draw_legend=draw_legend)
             histo_list = []
             for sample in self.samples:
@@ -152,14 +159,14 @@ class Plotting:
                         break
 
             if self.atlas_label_text:
-                if(self.style == "atlas"):
-                    atlas.SetAtlasStyle()
-                    atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-                if (self.style == "cms"):
-                    cmsstyle.SetCmsStyle()
-                    cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if self.style == "atlas":
+                    set_atlas_style()
+                    atlas_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                elif self.style == "cms":
+                    set_cms_style()
+                    cms_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
-                atlas.add_text(label["x"], label["y"], label["text"])
+                add_text(label["x"], label["y"], label["text"])
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
@@ -169,7 +176,7 @@ class Plotting:
 
     def plot_th2(self, plots_th2):
         for plot in plots_th2:
-            simpleTH2_plot = presets.SimpleTH2(plot.name, plot.x_label, plot.y_label)
+            simpleTH2_plot = SimpleTH2Plot(plot.name, plot.x_label, plot.y_label)
             histogram = None
             sample_found = False
             for plot_sample in plot.samples:
@@ -220,14 +227,14 @@ class Plotting:
             simpleTH2_plot.canvas.cd()
 
             if self.atlas_label_text:
-                if(self.style == "atlas"):
-                    atlas.SetAtlasStyle()
-                    atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-                if (self.style == "cms"):
-                    cmsstyle.SetCmsStyle()
-                    cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                if self.style == "atlas":
+                    set_atlas_style()
+                    atlas_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                elif self.style == "cms":
+                    set_cms_style()
+                    cms_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
             for label in self.plot_labels:
-                atlas.add_text(label["x"], label["y"], label["text"])
+                add_text(label["x"], label["y"], label["text"])
             for fmt in self.save_formats:
                 simpleTH2_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
 
@@ -266,16 +273,16 @@ class Plotting:
 
                         # Add ATLAS label
                         if self.atlas_label_text:
-                            if(self.style == "atlas"):
-                                atlas.SetAtlasStyle()
-                                atlas.ATLASLabel(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-                            if (self.style == "cms"):
-                                cmsstyle.SetCmsStyle()
-                                cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                            if self.style == "atlas":
+                                set_atlas_style()
+                                atlas_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
+                            elif self.style == "cms":
+                                set_cms_style()
+                                cms_label(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
                         # Add custom plot labels
                         for label in self.plot_labels:
-                            atlas.add_text(label["x"], label["y"], label["text"])
+                            add_text(label["x"], label["y"], label["text"])
 
                         # Update the canvas
                         new_canvas.Update()
@@ -291,7 +298,7 @@ class Plotting:
         hist.SetMarkerStyle(style_config.get('markerstyle', 20))
 
         if 'legend' in style_config:
-            hist.th.SetTitle(style_config['legend'])
+            hist.legend_title = style_config['legend']
 
     def apply_tick_interval(self, axis, interval, xmin, xmax):
         if interval is not None:
