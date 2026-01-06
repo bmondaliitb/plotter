@@ -13,6 +13,15 @@ import logging
 
 log = logging.getLogger(__name__)
 
+def _legend_from_config(legend_position):
+    if not isinstance(legend_position, dict):
+        return legend()
+    allowed_keys = {"xMin", "xMax", "yMax", "height", "nColumns"}
+    kwargs = {key: value for key, value in legend_position.items() if key in allowed_keys}
+    if not kwargs:
+        return legend()
+    return legend(**kwargs)
+
 
 class simple:
     def __init__(
@@ -23,9 +32,11 @@ class simple:
         isTH1: bool = True,
         autoY=True,
         draw_legend= True,
+        legend_position=None,
     ):
         self.canvas = canvas(plotName)
         self.draw_legend = draw_legend
+        self.legend_position = legend_position
 
         self.mainPad = pad(
             "main",
@@ -48,7 +59,7 @@ class simple:
 
         self.canvas.tcan.cd()
         if self.draw_legend:
-            self.leg = legend()
+            self.leg = _legend_from_config(self.legend_position)
             self.leg.add_histos(self.hs)
             self.leg.create_and_draw()
 
@@ -298,7 +309,8 @@ class Comparison:
         ratioTitle: str = "Ratio",
         fraction: float = 0.3,
         show_nonEmptyOnly: bool = True,
-        draw_legend = True
+        draw_legend = True,
+        legend_position=None
     ):
         self.canvas = canvas(plotName)
 
@@ -319,6 +331,7 @@ class Comparison:
 
         self.nonEmpty = show_nonEmptyOnly
         self.draw_legend = draw_legend
+        self.legend_position = legend_position
 
     def add_and_plot(self, histos: List[histo]):
         if len(histos) == 0:
@@ -377,7 +390,7 @@ class Comparison:
 
         self.canvas.tcan.cd()
         if self.draw_legend:
-            self.leg = legend()
+            self.leg = _legend_from_config(self.legend_position)
             self.leg.add_histos(self.histos)
             self.leg.create_and_draw()
 

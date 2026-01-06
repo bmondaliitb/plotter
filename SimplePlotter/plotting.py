@@ -61,7 +61,8 @@ class Plotting:
         for plot in plots_th1:
             draw_legend = plot.config.get("draw_legend", True)
             simple_plot = presets.simple(plot.name, plot.x_label, plot.y_label,
-                                         draw_legend=draw_legend)
+                                         draw_legend=draw_legend,
+                                         legend_position=self.legend_position)
             histo_list = []
             for sample in self.samples:
                 for plot_sample in plot.samples:
@@ -111,7 +112,8 @@ class Plotting:
         for plot in plots_th1_ratio:
             draw_legend = plot.config.get("draw_legend", True)
             comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label,
-                                                 draw_legend=draw_legend)
+                                                 draw_legend=draw_legend,
+                                                 legend_position=self.legend_position)
             histo_list = []
             for sample in self.samples:
                 for plot_sample in plot.samples:
