@@ -78,6 +78,6 @@ class Sample:
 
     def normalize_histogram(self):
         if hasattr(self.hist, "th"):
-            integral = self.hist.th.Integral()
+            integral = self.hist.th.Integral()+self.hist.th.GetBinContent(self.hist.th.GetNbinsX()+1)+self.hist.th.GetBinContent(0)
             if integral != 0:
                 self.hist.th.Scale(1.0 / integral)
