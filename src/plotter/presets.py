@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 def _legend_from_config(legend_position):
     if not isinstance(legend_position, dict):
         return legend()
-    allowed_keys = {"xMin", "xMax", "yMax", "height", "nColumns", "textSize"}
+    allowed_keys = {"xMin", "xMax", "yMax", "height", "nColumns", "textSize", "textFont"}
     kwargs = {key: value for key, value in legend_position.items() if key in allowed_keys}
     if not kwargs:
         return legend()

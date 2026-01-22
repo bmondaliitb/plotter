@@ -10,7 +10,7 @@ class legend:
     """ Wrapper around TLegend"""
     def __init__(self, xMin: float = 0.58, xMax: float = 0.96,
                  height: float = 0.03, yMax: float = 0.94, nColumns: int = 1,
-                 textSize: float = None) -> None:
+                 textSize: float = None, textFont: int = None) -> None:
         """
         Arguments:
             xMin (``float``): lower x position of the legend
@@ -18,6 +18,7 @@ class legend:
             yMin (``float``): lower y position of the legend
             yMax (``float``): upper y position of the legend
             textSize (``float``): text size of the legend
+            textFont (``int``): text font of the legend
         """
 
         self.xMin = xMin
@@ -26,6 +27,7 @@ class legend:
         self.height = height
         self.nCol = nColumns
         self.textSize = textSize
+        self.textFont = textFont
 
         self.histos: List[histo] = []
 
@@ -51,7 +53,8 @@ class legend:
 
         if self.textSize is not None:
             self.tlegend.SetTextSize(self.textSize)
-
+        if self.textFont is not None:
+            self.tlegend.SetTextFont(self.textFont)
         for h in self.histos:
             if h.inlegend is False:
                 continue
