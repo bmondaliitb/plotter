@@ -11,7 +11,7 @@ Primary settings:
 Label and legend settings:
 - `atlas_label` (string or dict, optional): string uses default position; dict supports `name` and `position: [x, y]`.
 - `plot_label` (list of dicts, optional): each entry has `x`, `y`, `text` for extra annotations.
-- `legend_position` (dict, optional): supports `xMin`, `xMax`, `yMax`, `height`, `nColumns`.
+- `legend_position` (dict, optional): supports `xMin`, `xMax`, `yMax`, `height`, `nColumns`, `textSize`.
 
 Style defaults:
 - `CommonStyles` (dict, optional): merged into each `Plot.samples` style entry (keys like `linecolor`, `linestyle`, `linewidth`, `markerstyle`, `legend`).
