@@ -64,15 +64,18 @@ class Plotting:
                                          draw_legend=draw_legend,
                                          legend_position=self.legend_position)
             histo_list = []
-            for sample in self.samples:
-                for plot_sample in plot.samples:
-                    if sample.name == plot_sample["name"]:
-                        self.apply_style(sample.hist, plot_sample)
-                        histo_list.append(sample.hist)
-                        if not plot.x_label:
-                            plot.x_label = sample.hist.th.GetXaxis().GetTitle()
-                        if not plot.y_label:
-                            plot.y_label = sample.hist.th.GetYaxis().GetTitle()
+            sample_by_name = {sample.name: sample for sample in self.samples}
+            for plot_sample in plot.samples:
+                sample = sample_by_name.get(plot_sample["name"])
+                if sample is None:
+                    log.warning(f"Sample '{plot_sample['name']}' not found for plot {plot.name}")
+                    continue
+                self.apply_style(sample.hist, plot_sample)
+                histo_list.append(sample.hist)
+                if not plot.x_label:
+                    plot.x_label = sample.hist.th.GetXaxis().GetTitle()
+                if not plot.y_label:
+                    plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
             simple_plot.mainPad.drawoption = "hist E"
             if getattr(plot, "setlogy", False):
@@ -115,15 +118,18 @@ class Plotting:
                                                  draw_legend=draw_legend,
                                                  legend_position=self.legend_position)
             histo_list = []
-            for sample in self.samples:
-                for plot_sample in plot.samples:
-                    if sample.name == plot_sample["name"]:
-                        self.apply_style(sample.hist, plot_sample)
-                        histo_list.append(sample.hist)
-                        if not plot.x_label:
-                            plot.x_label = sample.hist.th.GetXaxis().GetTitle()
-                        if not plot.y_label:
-                            plot.y_label = sample.hist.th.GetYaxis().GetTitle()
+            sample_by_name = {sample.name: sample for sample in self.samples}
+            for plot_sample in plot.samples:
+                sample = sample_by_name.get(plot_sample["name"])
+                if sample is None:
+                    log.warning(f"Sample '{plot_sample['name']}' not found for plot {plot.name}")
+                    continue
+                self.apply_style(sample.hist, plot_sample)
+                histo_list.append(sample.hist)
+                if not plot.x_label:
+                    plot.x_label = sample.hist.th.GetXaxis().GetTitle()
+                if not plot.y_label:
+                    plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
             comparison_plot.mainPad.drawoption = "hist E"
             if getattr(plot, "setlogy", False):
