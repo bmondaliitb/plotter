@@ -135,7 +135,7 @@ class Plotting:
             if getattr(plot, "setlogy", False):
                 comparison_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
-                comparison_plot.mainPad.logx()
+                comparison_plot.logx() # dont call comparison_plot.mainPad.logx(), that only acts on mainPad not ratio pad
             if hasattr(plot, 'y_range_ratio') and plot.y_range_ratio is not None:
                 comparison_plot.ratioPad.set_yrange(plot.y_range_ratio[0], plot.y_range_ratio[1])
             else:
