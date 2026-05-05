@@ -30,6 +30,7 @@ Core plot fields:
 - `x_label` (string, optional): x-axis title.
 - `y_label` (string, optional): y-axis title.
 - `x_range` (list `[min, max]`, optional): x-axis range.
+- `draw_errors` ([true,false]): whether to draw error bar or not
 
 Axis/range options:
 - `y_range` (list `[min, max]`, optional): y-axis range.

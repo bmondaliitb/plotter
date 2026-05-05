@@ -77,7 +77,8 @@ class Plotting:
                 if not plot.y_label:
                     plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
-            simple_plot.mainPad.drawoption = "hist E"
+            drawoption = "hist E" if plot.draw_errors else "hist"
+            simple_plot.mainPad.drawoption = drawoption
             if getattr(plot, "setlogy", False):
                 simple_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
@@ -116,7 +117,8 @@ class Plotting:
             draw_legend = plot.config.get("draw_legend", True)
             comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label,
                                                  draw_legend=draw_legend,
-                                                 legend_position=self.legend_position)
+                                                 legend_position=self.legend_position,
+                                                 draw_ratio_error_band=plot.draw_errors)
             histo_list = []
             sample_by_name = {sample.name: sample for sample in self.samples}
             for plot_sample in plot.samples:
@@ -131,7 +133,9 @@ class Plotting:
                 if not plot.y_label:
                     plot.y_label = sample.hist.th.GetYaxis().GetTitle()
 
-            comparison_plot.mainPad.drawoption = "hist E"
+            drawoption = "hist E" if plot.draw_errors else "hist"
+            comparison_plot.mainPad.drawoption = drawoption
+            comparison_plot.ratioPad.drawoption = drawoption
             if getattr(plot, "setlogy", False):
                 comparison_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):

@@ -310,7 +310,8 @@ class Comparison:
         fraction: float = 0.3,
         show_nonEmptyOnly: bool = True,
         draw_legend = True,
-        legend_position=None
+        legend_position=None,
+        draw_ratio_error_band: bool = True,
     ):
         self.canvas = canvas(plotName)
 
@@ -332,6 +333,7 @@ class Comparison:
         self.nonEmpty = show_nonEmptyOnly
         self.draw_legend = draw_legend
         self.legend_position = legend_position
+        self.draw_ratio_error_band = draw_ratio_error_band
 
     def add_and_plot(self, histos: List[histo]):
         if len(histos) == 0:
@@ -371,12 +373,6 @@ class Comparison:
         self.mainPad.add_histos(self.histos)
         self.mainPad.plot_histos()
 
-        self.hErr = self.histos[0].get_ratio(self.histos[0])
-        self.hErr.color = ROOT.kGray + 1
-        # TODO: custom config
-        cfgErr = loader.load_config(loader.path() + "configs/err.json")
-        self.hErr.style_histo(cfgErr)
-
         self.hRatios = []
         first = True
         for h in self.histos:
@@ -385,7 +381,25 @@ class Comparison:
                 continue
             hR = h.get_ratio(self.histos[0], fillToLine=False)
             self.hRatios.append(hR)
-        self.ratioPad.add_histos([self.hErr] + self.hRatios)
+
+        ratio_histos = list(self.hRatios)
+        if self.draw_ratio_error_band:
+            self.hErr = self.histos[0].get_ratio(self.histos[0])
+            self.hErr.color = ROOT.kGray + 1
+            # TODO: custom config
+            cfgErr = loader.load_config(loader.path() + "configs/err.json")
+            self.hErr.style_histo(cfgErr)
+            ratio_histos = [self.hErr] + ratio_histos
+        else:
+            self.hUnity = self.histos[0].get_ratio(self.histos[0])
+            self.hUnity.linecolor = ROOT.kBlack
+            self.hUnity.linestyle = 2
+            self.hUnity.linewidth = 2
+            self.hUnity.fillstyle = "hollow"
+            self.hUnity.inlegend = False
+            ratio_histos = [self.hUnity] + ratio_histos
+
+        self.ratioPad.add_histos(ratio_histos)
         self.ratioPad.plot_histos()
 
         self.canvas.tcan.cd()
