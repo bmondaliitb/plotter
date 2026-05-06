@@ -42,6 +42,21 @@ Display options:
 - `setlogy` (bool, optional): log scale for y-axis.
 - `draw_legend` (bool, optional): draw legend (TH1 and overlay only).
 - `y_range_ratio` (list `[min, max]`, optional): ratio pad y-range (overlay only).
+- `ratio_pad_margin_up` (number, optional): extra top margin for overlay ratio pads when tick labels are clipped.
+- `ratio_pad_margin_down` (number, optional): optional bottom margin override for the ratio pad.
+- `plot_label` (list of dicts, optional): plot-specific annotations that override the Job-level `plot_label` for that plot only.
+- Each label dict supports `x`, `y`, `text`, and optional `color`, `font`, `size` keys.
+
+Example:
+```yaml
+plot_label:
+  - text: "Dijet, JZ2-JZ9"
+    x: 0.25
+    y: 0.80
+  - text: "response = E_{reco}/E_{truth}"
+    x: 0.25
+    y: 0.72
+```
 
 Per-sample style keys inside `Plot.samples`:
 - `name` (string, required): sample name from `Sample`.

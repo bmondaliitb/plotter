@@ -57,6 +57,25 @@ class Plotting:
             plots.append(plot_obj)
         return plots
 
+    def _get_plot_labels(self, plot):
+        labels = getattr(plot, "plot_labels", None)
+        if labels is None:
+            labels = self.plot_labels
+        if isinstance(labels, dict):
+            labels = [labels]
+        return labels or []
+
+    def _draw_plot_labels(self, labels):
+        for label in labels:
+            atlas.add_text(
+                label["x"],
+                label["y"],
+                label["text"],
+                color=label.get("color", 1),
+                font=label.get("font", 42),
+                size=label.get("size", 0.04),
+            )
+
     def plot_th1(self, plots_th1):
         for plot in plots_th1:
             draw_legend = plot.config.get("draw_legend", True)
@@ -104,13 +123,13 @@ class Plotting:
                     cmsstyle.SetCmsStyle()
                     cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
-            for label in self.plot_labels:
-                atlas.add_text(label["x"], label["y"], label["text"])
+            self._draw_plot_labels(self._get_plot_labels(plot))
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 simple_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             for fmt in self.save_formats:
-                simple_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
+                #simple_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
+                simple_plot.save(f"{self.output_path}/{plot.name}.{fmt}")
 
     def plot_th1_ratio(self, plots_th1_ratio):
         for plot in plots_th1_ratio:
@@ -140,6 +159,11 @@ class Plotting:
                 comparison_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
                 comparison_plot.logx() # dont call comparison_plot.mainPad.logx(), that only acts on mainPad not ratio pad
+            if getattr(plot, "ratio_pad_margin_up", None) is not None or getattr(plot, "ratio_pad_margin_down", None) is not None:
+                comparison_plot.ratioPad.margins(
+                    up=getattr(plot, "ratio_pad_margin_up", None),
+                    down=getattr(plot, "ratio_pad_margin_down", None),
+                )
             if hasattr(plot, 'y_range_ratio') and plot.y_range_ratio is not None:
                 comparison_plot.ratioPad.set_yrange(plot.y_range_ratio[0], plot.y_range_ratio[1])
             else:
@@ -170,13 +194,13 @@ class Plotting:
                 if (self.style == "cms"):
                     cmsstyle.SetCmsStyle()
                     cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-            for label in self.plot_labels:
-                atlas.add_text(label["x"], label["y"], label["text"])
+            self._draw_plot_labels(self._get_plot_labels(plot))
             # if x_range is set, use it
             if hasattr(plot, 'x_range') and plot.x_range is not None:
                 comparison_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             for fmt in self.save_formats:
-                comparison_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
+                #comparison_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
+                comparison_plot.save(f"{self.output_path}/{plot.name}.{fmt}")
 
 
     def plot_th2(self, plots_th2):
@@ -238,10 +262,10 @@ class Plotting:
                 if (self.style == "cms"):
                     cmsstyle.SetCmsStyle()
                     cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
-            for label in self.plot_labels:
-                atlas.add_text(label["x"], label["y"], label["text"])
+            self._draw_plot_labels(self._get_plot_labels(plot))
             for fmt in self.save_formats:
-                simpleTH2_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
+                #simpleTH2_plot.save(f"{self.output_path}/{plot.name}_{self.job_config['job_name']}.{fmt}")
+                simpleTH2_plot.save(f"{self.output_path}/{plot.name}.{fmt}")
 
     # plot canvas
     def plot_canvas(self, plots_canvas):
@@ -286,8 +310,7 @@ class Plotting:
                                 cmsstyle.CmsText(self.atlas_label_pos[0], self.atlas_label_pos[1], self.atlas_label_text)
 
                         # Add custom plot labels
-                        for label in self.plot_labels:
-                            atlas.add_text(label["x"], label["y"], label["text"])
+                        self._draw_plot_labels(self._get_plot_labels(plot))
 
                         # Update the canvas
                         new_canvas.Update()

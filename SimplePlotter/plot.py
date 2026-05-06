@@ -17,3 +17,6 @@ class Plot:
         self.y_range_ratio = config.get("y_range_ratio", None)
         self.x_tick_interval = config.get("x_tick_interval", None)
         self.draw_errors = config.get("draw_errors", True)
+        self.plot_labels = config.get("plot_label", None)
+        self.ratio_pad_margin_up = config.get("ratio_pad_margin_up", None)
+        self.ratio_pad_margin_down = config.get("ratio_pad_margin_down", None)
