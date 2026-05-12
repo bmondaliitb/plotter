@@ -277,7 +277,10 @@ class pad:
         self.basis.draw()
 
         for h in self.histos:
-            h.drawoption = self.drawoption
+            # Only override drawoption if the histogram doesn't have a specific one already
+            # This preserves options like "e2" for error bands, which are set via config
+            if self.drawoption and not h.drawoption:
+                h.drawoption = self.drawoption
             h.draw(suffix=" same")
 
         self.basis.draw(drawoption="sameaxis")

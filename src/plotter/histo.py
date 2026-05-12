@@ -118,6 +118,17 @@ class histo(Plottable):
 
         hratio.fillcolor = fillcolor
         hratio.linecolor = linecolor
+        # If ratio was computed against the identical histogram (e.g. hist/get_ratio(hist)),
+        # ensure bins where denominator is zero are set to unity (with zero error).
+        try:
+            if self.isTH1 and hasattr(otherHisto, 'th') and self.th is otherHisto.th:
+                for i in range(1, hratio.th.GetNbinsX() + 1):
+                    if otherHisto.th.GetBinContent(i) == 0:
+                        hratio.th.SetBinContent(i, 1.0)
+                        hratio.th.SetBinError(i, 0.0)
+        except Exception:
+            # be robust: if anything fails here, do not crash plotting
+            pass
         return hratio
 
     def style_histo(self, style: Dict[str, Any]) -> None:

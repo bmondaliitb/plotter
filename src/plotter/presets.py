@@ -161,12 +161,15 @@ class dataMC:
         self.mainPad.plot_histos()
 
         if self.hShapes != []:
-            self.hErr = self.hData.get_ratio(self.hData)
-            self.hErr.title = "Data Stat. Unc."
-            self.hRatio = self.hMCs[0].get_ratio(self.hData, fillToLine=True)
-            self.hRatioShapes = [h.get_ratio(self.hData) for h in self.hShapes]
-            self.ratioPad.add_histos([self.hErr, self.hRatio])
-            self.ratioPad.add_histos(self.hRatioShapes)
+            # Use MC as basis for the ratio and show MC stat uncertainty band
+            # (keep behavior consistent with the no-shapes branch)
+            self.hErr = self.hMCs[0].get_ratio(self.hMCs[0])
+            self.hErr.title = "MC Stat. Unc."
+            # ratio = data / mc
+            self.hRatio = hData.get_ratio(self.hMCs[0], fillToLine=True)
+            # shapes ratios should also be computed vs MC
+            self.hRatioShapes = [h.get_ratio(self.hMCs[0]) for h in self.hShapes]
+            self.ratioPad.add_histos([self.hErr, self.hRatio] + self.hRatioShapes)
         else:
             self.hErr = self.hMCs[0].get_ratio(self.hMCs[0])
             self.hErr.title = "MC Stat. Unc."

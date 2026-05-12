@@ -31,6 +31,8 @@ class Plotting:
             self.atlas_label_text = atlas_label_config
             self.atlas_label_pos = [0.22, 0.9]
         self.plot_labels = self.job_config.get("plot_label", [])
+        self.ratio_pad_margin_up = self.job_config.get("ratio_pad_margin_up", 0.05)
+        self.ratio_pad_margin_down = self.job_config.get("ratio_pad_margin_down", None)
         self.legend_position = self.job_config.get("legend_position", {})
         self.output_directory = self.job_config.get("output_directory", "output")
 
@@ -159,10 +161,16 @@ class Plotting:
                 comparison_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
                 comparison_plot.logx() # dont call comparison_plot.mainPad.logx(), that only acts on mainPad not ratio pad
-            if getattr(plot, "ratio_pad_margin_up", None) is not None or getattr(plot, "ratio_pad_margin_down", None) is not None:
+            ratio_pad_margin_up = getattr(plot, "ratio_pad_margin_up", None)
+            if ratio_pad_margin_up is None:
+                ratio_pad_margin_up = self.ratio_pad_margin_up
+            ratio_pad_margin_down = getattr(plot, "ratio_pad_margin_down", None)
+            if ratio_pad_margin_down is None:
+                ratio_pad_margin_down = self.ratio_pad_margin_down
+            if ratio_pad_margin_up is not None or ratio_pad_margin_down is not None:
                 comparison_plot.ratioPad.margins(
-                    up=getattr(plot, "ratio_pad_margin_up", None),
-                    down=getattr(plot, "ratio_pad_margin_down", None),
+                    up=ratio_pad_margin_up,
+                    down=ratio_pad_margin_down,
                 )
             if hasattr(plot, 'y_range_ratio') and plot.y_range_ratio is not None:
                 comparison_plot.ratioPad.set_yrange(plot.y_range_ratio[0], plot.y_range_ratio[1])

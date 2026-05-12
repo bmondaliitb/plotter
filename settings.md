@@ -12,6 +12,8 @@ Label and legend settings:
 - `atlas_label` (string or dict, optional): string uses default position; dict supports `name` and `position: [x, y]`.
 - `plot_label` (list of dicts, optional): each entry has `x`, `y`, `text` for extra annotations.
 - `legend_position` (dict, optional): supports `xMin`, `xMax`, `yMax`, `height`, `nColumns`, `textSize`, `textFont`.
+- `ratio_pad_margin_up` (number, optional): default top margin for overlay ratio pads.
+- `ratio_pad_margin_down` (number, optional): default bottom margin for overlay ratio pads.
 
 Style defaults:
 - `CommonStyles` (dict, optional): merged into each `Plot.samples` style entry (keys like `linecolor`, `linestyle`, `linewidth`, `markerstyle`, `legend`).
@@ -46,6 +48,10 @@ Display options:
 - `ratio_pad_margin_down` (number, optional): optional bottom margin override for the ratio pad.
 - `plot_label` (list of dicts, optional): plot-specific annotations that override the Job-level `plot_label` for that plot only.
 - Each label dict supports `x`, `y`, `text`, and optional `color`, `font`, `size` keys.
+
+Default behavior:
+- If a plot does not set `ratio_pad_margin_up` or `ratio_pad_margin_down`, the `Job` values are used.
+- If the `Job` block also omits them, the code falls back to `ratio_pad_margin_up = 0.05` and leaves `ratio_pad_margin_down` unset.
 
 Example:
 ```yaml
