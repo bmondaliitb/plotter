@@ -14,6 +14,7 @@ class Plot:
         self.z_range = config.get("z_range", None)
         self.setlogy = config.get("setlogy", False)
         self.setlogx = config.get("setlogx", False)
+        self.setlogz = config.get("setlogz", False)
         self.y_range_ratio = config.get("y_range_ratio", None)
         self.x_tick_interval = config.get("x_tick_interval", None)
         self.draw_errors = config.get("draw_errors", True)

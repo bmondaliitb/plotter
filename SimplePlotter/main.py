@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from config_reader import ConfigReader
 from plotting import Plotting
 import argparse

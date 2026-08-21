@@ -1,5 +1,7 @@
 import os
 import logging
+import math
+from array import array
 from sample import Sample
 from plot import Plot
 from plotter import presets
@@ -100,6 +102,8 @@ class Plotting:
 
             drawoption = "hist E" if plot.draw_errors else "hist"
             simple_plot.mainPad.drawoption = drawoption
+            if plot.y_range is not None:
+                simple_plot.set_yrange(*plot.y_range)
             if getattr(plot, "setlogy", False):
                 simple_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
@@ -157,6 +161,8 @@ class Plotting:
             drawoption = "hist E" if plot.draw_errors else "hist"
             comparison_plot.mainPad.drawoption = drawoption
             comparison_plot.ratioPad.drawoption = drawoption
+            if plot.y_range is not None:
+                comparison_plot.mainPad.set_yrange(*plot.y_range)
             if getattr(plot, "setlogy", False):
                 comparison_plot.mainPad.logy()
             if getattr(plot, "setlogx", False):
@@ -232,13 +238,20 @@ class Plotting:
 
             simpleTH2_plot.mainPad.drawoption = "colz"
 
-            # Set log scale before plotting
+            # Set axis log scale before plotting
             if getattr(plot, "setlogx", False):
                 simpleTH2_plot.mainPad.logx()
             if getattr(plot, "setlogy", False):
                 simpleTH2_plot.mainPad.logy()
+
+            zmin, zmax = self._get_zrange(plot, histogram.th)
             if getattr(plot, "setlogz", False):
-                simpleTH2_plot.mainPad.logz()
+                logz_range = self._get_valid_log_zrange(plot.name, histogram.th, zmin, zmax)
+                if logz_range is not None:
+                    zmin, zmax = logz_range
+                    self._apply_log_z_contours(histogram.th, zmin, zmax)
+                    simpleTH2_plot.logz()
+            histogram.th.GetZaxis().SetRangeUser(zmin, zmax)
 
             simpleTH2_plot.add_and_plot(histogram)
 
@@ -254,12 +267,7 @@ class Plotting:
                 simpleTH2_plot.set_xrange(plot.x_range[0], plot.x_range[1])
             if hasattr(plot, 'y_range') and plot.y_range is not None:
                 simpleTH2_plot.set_yrange(plot.y_range[0], plot.y_range[1])
-            if hasattr(plot, 'z_range') and plot.z_range is not None:
-                simpleTH2_plot.set_zrange(plot.z_range[0], plot.z_range[1])
-            else:
-                zmin = histogram.th.GetMinimum()
-                zmax = histogram.th.GetMaximum()
-                simpleTH2_plot.set_zrange(zmin, zmax)
+            simpleTH2_plot.set_zrange(zmin, zmax)
 
             simpleTH2_plot.canvas.cd()
 
@@ -344,6 +352,42 @@ class Plotting:
             # Ensure a reasonable number of divisions
             ndiv = max(1, min(ndiv, 20))
             axis.SetNdivisions(ndiv, 0, 0, False)
+
+    def _get_positive_minimum(self, th):
+        positive_minimum = None
+        for xbin in range(1, th.GetNbinsX() + 1):
+            for ybin in range(1, th.GetNbinsY() + 1):
+                value = th.GetBinContent(xbin, ybin)
+                if value > 0 and (positive_minimum is None or value < positive_minimum):
+                    positive_minimum = value
+        return positive_minimum
+
+    def _get_zrange(self, plot, th):
+        if hasattr(plot, 'z_range') and plot.z_range is not None:
+            return plot.z_range[0], plot.z_range[1]
+        return th.GetMinimum(), th.GetMaximum()
+
+    def _get_valid_log_zrange(self, plot_name, th, zmin, zmax):
+        positive_zmin = self._get_positive_minimum(th)
+        if positive_zmin is None or zmax <= 0:
+            log.warning(f"Histogram for plot {plot_name} has no positive bins; skipping log-z color scale")
+            return None
+        if zmin <= 0:
+            log.warning(
+                f"Plot {plot_name} requested log-z with zmin={zmin}; using smallest positive bin {positive_zmin}"
+            )
+            zmin = positive_zmin
+        if zmax <= zmin:
+            log.warning(f"Plot {plot_name} has invalid log-z range [{zmin}, {zmax}]; skipping log-z color scale")
+            return None
+        return zmin, zmax
+
+    def _apply_log_z_contours(self, th, zmin, zmax, n_contours=255):
+        log_zmin = math.log10(zmin)
+        log_zmax = math.log10(zmax)
+        step = (log_zmax - log_zmin) / n_contours
+        levels = array('d', [10 ** (log_zmin + i * step) for i in range(n_contours + 1)])
+        th.SetContour(len(levels), levels)
 
     def generate_plots(self):
         # create plot objects based on plot type
