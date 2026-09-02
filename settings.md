@@ -31,6 +31,9 @@ Core plot fields:
 - `samples` (list of dicts, required): sample references and style overrides.
 - `x_label` (string, optional): x-axis title.
 - `y_label` (string, optional): y-axis title.
+- `y_label_ratio` (string, optional): ratio-pad y-axis title; defaults to `Ratio`.
+- `y_label_ratio_font_size` (number, optional): ratio-pad y-axis title size.
+- `x_label_ratio_font_size` (number, optional): ratio-pad x-axis title size.
 - `x_range` (list `[min, max]`, optional): x-axis range.
 - `draw_errors` ([true,false]): whether to draw error bar or not
 
@@ -42,6 +45,7 @@ Axis/range options:
 Display options:
 - `setlogx` (bool, optional): log scale for x-axis.
 - `setlogy` (bool, optional): log scale for y-axis.
+- `setlogz` (bool, optional): log scale for the TH2 color axis, with color contours spaced linearly in `log10(z)`.
 - `draw_legend` (bool, optional): draw legend (TH1 and overlay only).
 - `y_range_ratio` (list `[min, max]`, optional): ratio pad y-range (overlay only).
 - `ratio_pad_margin_up` (number, optional): extra top margin for overlay ratio pads when tick labels are clipped.

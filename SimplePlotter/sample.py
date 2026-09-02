@@ -1,12 +1,9 @@
 import glob
 import sys
 import ROOT
-from plotter.dataset import dataset
 from plotter.tfile2 import TFile2 as tfile2
 from plotter.histo import histo
 from plotter.histo import histo2D
-
-from plotter.canvas import canvas
 
 class Canvas:
     def __init__(self, name, canvas_obj):

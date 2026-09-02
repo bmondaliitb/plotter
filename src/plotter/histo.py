@@ -2,7 +2,6 @@ import ROOT
 from ROOT import TH1
 from ROOT import TH2
 from . import thHelper
-from . import loader
 from typing import Optional, Dict, Any, List, Union
 from plotter.plottingbase import Plottable
 
@@ -29,7 +28,6 @@ class histo(Plottable):
         linecolor: int = ROOT.kBlack,
         fillcolor: Optional[int] = 0,
         drawoption: str = "",
-        configPath: str = "",
     ) -> None:
         """
         Arguments:
@@ -44,7 +42,6 @@ class histo(Plottable):
 
         self.linecolor = linecolor
         self.fillcolor = fillcolor
-        self.config = loader.load_config(configPath) if configPath != "" else {}
         self.apply_all_style()
         if drawoption != "":
             self.drawoption = drawoption
@@ -54,9 +51,6 @@ class histo(Plottable):
 
     def apply_all_style(self):
         self.th.SetTitle(self.title)
-
-        if self.config != "":
-            self.style_histo(self.config)
 
     def draw(self, suffix: str = "", drawoption: Optional[str] = None) -> None:
         """TH1.Draw wrapper,
@@ -207,9 +201,6 @@ class histo2D(Plottable):
 
     def apply_all_style(self):
         self.th.SetTitle(self.title)
-
-        if self.config != "":
-            self.style_histo(self.config)
 
     def draw(self, suffix: str = "", drawoption: Optional[str] = None) -> None:
         """TH2.Draw wrapper,
