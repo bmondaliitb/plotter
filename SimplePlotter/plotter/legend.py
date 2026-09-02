@@ -9,13 +9,16 @@ log = logging.getLogger(__name__)
 class legend:
     """ Wrapper around TLegend"""
     def __init__(self, xMin: float = 0.58, xMax: float = 0.96,
-                 height: float = 0.03, yMax: float = 0.94, nColumns: int = 1) -> None:
+                 height: float = 0.03, yMax: float = 0.94, nColumns: int = 1,
+                 textSize: float = None, textFont: int = None) -> None:
         """
         Arguments:
             xMin (``float``): lower x position of the legend
             xMax (``float``): upper x position of the legend
             yMin (``float``): lower y position of the legend
             yMax (``float``): upper y position of the legend
+            textSize (``float``): text size of the legend
+            textFont (``int``): text font of the legend
         """
 
         self.xMin = xMin
@@ -23,6 +26,8 @@ class legend:
         self.yMax = yMax
         self.height = height
         self.nCol = nColumns
+        self.textSize = textSize
+        self.textFont = textFont
 
         self.histos: List[histo] = []
 
@@ -46,15 +51,19 @@ class legend:
         self.yMin = self.yMax - self.height*len(self.histos)/self.nCol
         self.tlegend = TLegend(self.xMin, self.yMin, self.xMax, self.yMax)
 
+        if self.textSize is not None:
+            self.tlegend.SetTextSize(self.textSize)
+        if self.textFont is not None:
+            self.tlegend.SetTextFont(self.textFont)
         for h in self.histos:
             if h.inlegend is False:
                 continue
             if "p" in h.drawoption:
-                self.tlegend.AddEntry(h.th, h.title, "p")
+                self.tlegend.AddEntry(h.th, h.th.GetTitle(), "p")
             elif h.fillcolor:
-                self.tlegend.AddEntry(h.th, h.title, "f")
+                self.tlegend.AddEntry(h.th, h.th.GetTitle(), "f")
             else:
-                self.tlegend.AddEntry(h.th, h.title, "l")
+                self.tlegend.AddEntry(h.th, h.th.GetTitle(), "l")
 
         # TODO: config?
         self.tlegend.SetBorderSize(0)

@@ -1,4 +1,3 @@
-from . import loader
 from .histo import histo
 from . import thHelper
 import ROOT
@@ -8,6 +7,39 @@ from typing import List, Dict, Optional, Any
 import logging
 
 log = logging.getLogger(__name__)
+
+DEFAULT_PAD_STYLE = {
+    "margins": {
+        "margin_up": 0.05,
+        "margin_down": 0.15,
+        "margin_left": 0.18,
+        "margin_right": 0.05,
+    },
+    "basis": {
+        "x_titleOffset": 1.5,
+        "x_titleSize": 30,
+        "x_titleFont": 43,
+        "x_labelSize": 30,
+        "x_labelFont": 43,
+        "y_titleOffset": 2.2,
+        "y_titleSize": 30,
+        "y_titleFont": 43,
+        "y_labelSize": 30,
+        "y_labelFont": 43,
+        "n_div": [505, "Y"],
+    },
+}
+
+COMPARISON_PAD_STYLE = {
+    **DEFAULT_PAD_STYLE,
+    "margins": {
+        "margin_up": 0.08,
+        "margin_down": 0.35,
+        "margin_left": 0.18,
+        "margin_right": 0.05,
+    },
+    "basis": {**DEFAULT_PAD_STYLE["basis"], "x_titleOffset": 1.2},
+}
 
 
 class pad:
@@ -21,7 +53,7 @@ class pad:
         yl: float = 0,
         yh: float = 1,
         isTH1: bool = True,
-        configPath: str = loader.path() + "configs/pad.json",
+        style: Optional[Dict[str, Any]] = None,
         autoY=True,
     ) -> None:
         """
@@ -32,18 +64,15 @@ class pad:
             yl (``int``): fraction of y-axis of the canvas the pad starts at
             yh (``int``): fraction of y-axis of the canvas the pad ends at
             isTH1 (``bool``): if true, advanced axis functions are used
-            config (``str``): path to config of pad
+            style (``dict``): optional pad and axis style
             autoY (``bool``): if true, y-axis is autoscaled
         """
         self.tpad = TPad(name, name, xl, yl, xh, yh)
         self.name = name
 
-        self.config: Dict[str, Any] = {}
-        if configPath != "":
-            self.config = loader.load_config(configPath)
+        self.config = DEFAULT_PAD_STYLE if style is None else style
 
-        # if margins in config, update:
-        if self.config is not {} and "margins" in self.config.keys():
+        if "margins" in self.config:
             self.style_pad_margin(self.config["margins"])
 
         # for TH1 advanced axis functions are used
@@ -54,7 +83,7 @@ class pad:
         self.yTitle: Optional[str] = None
 
         self.yMin = 0.0
-        self.yMinZero = 0.0  # for log, minimum >0
+        self.yMinZero = 1e-6  # for log, minimum >0
         self.yMax = 1.0
         self.xMin = 0.0
         self.xMax = 1.0
@@ -66,6 +95,7 @@ class pad:
         self.autoY = autoY
 
         self.basis: Optional[histo] = None
+        self.drawoption = ""
 
     def reset_histos(self) -> None:
         """Removes all histograms but keeps all non-histo settings"""
@@ -125,6 +155,10 @@ class pad:
             else:
                 self._set_basis_yrange(margin=1)
 
+    def logz(self, doLog: bool = True) -> None:
+        """Sets the Z-axis/color scale to log/lin."""
+        self.tpad.SetLogz(doLog)
+
     def add_histos(self, histos: List[histo]) -> None:
         """Adds list of histograms to the pad
 
@@ -150,10 +184,12 @@ class pad:
 
     def _update_range(self, h: histo) -> None:
 
-        if h.isTH1:
+        if hasattr(h, 'isTH1') and h.isTH1:
             self._update_range_th1(h)
-        elif h.isTGraph:
+        elif hasattr(h, 'isTGraph') and h.isTGraph:
             self._update_range_tgraph(h)
+        elif hasattr(h, 'isTH2') and h.isTH2:
+            self._update_range_th2(h)
 
     def _update_range_th1(
         self, h: histo
@@ -199,7 +235,24 @@ class pad:
             if self.yMax < cur_max:
                 self.yMax = cur_max
 
-    def plot_histos(self) -> None:
+    def _update_range_th2(self, h: histo) -> None:
+        """ Update xMin, xMax, yMin, yMax if applicable for TH2"""
+        if self.histos == []:
+            self.xMin = h.th.GetXaxis().GetXmin()
+            self.xMax = h.th.GetXaxis().GetXmax()
+            self.yMin = h.th.GetYaxis().GetXmin()
+            self.yMax = h.th.GetYaxis().GetXmax()
+        else:
+            if self.xMin > h.th.GetXaxis().GetXmin():
+                self.xMin = h.th.GetXaxis().GetXmin()
+            if self.xMax < h.th.GetXaxis().GetXmax():
+                self.xMax = h.th.GetXaxis().GetXmax()
+            if self.yMin > h.th.GetYaxis().GetXmin():
+                self.yMin = h.th.GetYaxis().GetXmin()
+            if self.yMax < h.th.GetYaxis().GetXmax():
+                self.yMax = h.th.GetYaxis().GetXmax()
+
+    def plot_histos(self ) -> None:
         """Plots histograms, including creation of basis,
         which handles some properties of the plot,
         like the axis title or range
@@ -215,22 +268,31 @@ class pad:
         # this is done because we do not want to modify any externally provided
         # histograms
         # TODO: add histo.clone??
-        if self.histos[0].isTGraph:
+        if hasattr(self.histos[0], 'isTGraph') and self.histos[0].isTGraph:
             self.basis = histo(
                 "",
                 self.histos[0].th.Clone("basis").GetHistogram(),
                 linecolor=ROOT.kWhite,
                 fillcolor=ROOT.kWhite,
-                drawoption="hist",
+                drawoption=self.drawoption,
             )
-        else:
+        elif hasattr(self.histos[0], 'isTH2') and self.histos[0].isTH2:
             self.basis = histo(
                 "",
                 self.histos[0].th.Clone("basis"),
                 linecolor=ROOT.kWhite,
                 fillcolor=ROOT.kWhite,
-                drawoption="hist",
+                drawoption=self.drawoption,
             )
+        elif hasattr(self.histos[0], 'isTH1') and self.histos[0].isTH1:
+            self.basis = histo(
+                "",
+                self.histos[0].th.Clone("basis"),
+                linecolor=ROOT.kWhite,
+                fillcolor=ROOT.kWhite,
+                drawoption=self.drawoption,
+            )
+
         self.basis.th.Reset()
         self._set_basis_axis_title()
 
@@ -241,13 +303,16 @@ class pad:
         if self.customXrange or self.isTH1:
             self._set_basis_xrange()
 
-        # if basis in config, update:
-        if self.config is not {} and "basis" in self.config:
+        if "basis" in self.config:
             self.style_pad_basis(self.config["basis"])
 
         self.basis.draw()
 
         for h in self.histos:
+            # Only override drawoption if the histogram doesn't have a specific one already
+            # This preserves options like "e2" for error bands, which are set via config
+            if self.drawoption and not h.drawoption:
+                h.drawoption = self.drawoption
             h.draw(suffix=" same")
 
         self.basis.draw(drawoption="sameaxis")
@@ -337,6 +402,34 @@ class pad:
             raise RuntimeError
 
         self.basis.th.GetXaxis().SetRangeUser(self.xMin, self.xMax)
+
+    # for th2 we need to set z range
+    def set_zrange(self, zMin: float = 0, zMax: float = 100) -> None:
+        """Saves the z-axis range, applies to the basis if already exists
+
+        Arguments:
+            zMin (``float``): lower range of the z-axis
+            zMax (``float``): upper range of the z-axis
+        """
+        self.zMin = zMin
+        self.zMax = zMax
+        self.customZrange = True
+
+        if self.basis is not None:
+            self._set_basis_zrange()
+
+    def _set_basis_zrange(self) -> None:
+        """Sets rangeof the z-axis through the basis histogram"""
+
+        # only for setting both limits at the time for now TODO
+        if not self.zMin and not self.zMax:
+            return
+
+        if self.basis is None:
+            log.error("Called basis function but no basis yet!")
+            raise RuntimeError
+
+        self.basis.th.GetZaxis().SetRangeUser(self.zMin, self.zMax)
 
     def set_xrange(self, xMin: float = 0, xMax: float = 1) -> None:
         """Saves the x-axis range, applies to the basis if already exists

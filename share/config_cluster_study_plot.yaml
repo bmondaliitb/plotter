@@ -1,0 +1,393 @@
+# This is a configuration file used for plotting
+# simple histograms from the cluster truth study
+Job:
+  job_name: "ClusterStudyPlots"  # this is a folder name where the plots will be saved
+  output_directory: "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Plots/"
+  save_format: "png, root"  # this is the format of the output files"
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_low_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r11165.root"
+    #- "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"
+  style: "atlas" # or cms
+  #atlas_label: "Internal" # this will plot in default position; if you want to change the position use the below approach
+  atlas_label:
+    name: "Internal" #0.22, 0.9
+    position: [0.20, 0.89]
+
+  # Define common styles
+  # its applied automatically to all histograms
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "TrueVsCalibrated"
+    variable: "TrueVsCalibrated"
+  - name: "TrueVsUncalibrated"
+    variable: "TrueVsUncalibrated"
+  - name: "TruthEnergy"
+    variable: "TruthEnergy"
+  - name: "CalibratedEnergy"
+    variable: "CalibratedEnergy"
+  - name: "UncalibratedEnergy"
+    variable: "UncalibratedEnergy"
+  - name: "uTFromClusters"
+    variable: "uTFromClusters"
+  - name: "uTFromPFOs"
+    variable: "uTFromPFOs"
+  - name: "CellSignificance"
+    variable: "CellSignificance"
+  - name: "ClusterEta"
+    variable: "ClusterEta"
+    normalize: true
+
+  - name: "TruthEnergyInEta_0.0_0.5"
+    variable: "TruthEnergyInEta_0.0_0.5"
+    normalize: true
+  - name: "TruthEnergyInEta_0.5_1.0"
+    variable: "TruthEnergyInEta_0.5_1.0"
+    normalize: true
+  - name: "TruthEnergyInEta_1.0_1.5"
+    variable: "TruthEnergyInEta_1.0_1.5"
+    normalize: true
+  - name: "TruthEnergyInEta_1.5_2.0"
+    variable: "TruthEnergyInEta_1.5_2.0"
+    normalize: true
+  - name: "TruthEnergyInEta_2.0_2.5"
+    variable: "TruthEnergyInEta_2.0_2.5"
+    normalize: true
+  - name: "TruthEnergyInEta_2.5_3.0"
+    variable: "TruthEnergyInEta_2.5_3.0"
+    normalize: true
+  - name: "TruthEnergyInEta_3.0_3.5"
+    variable: "TruthEnergyInEta_3.0_3.5"
+    normalize: true
+  - name: "TruthEnergyInEta_3.5_4.0"
+    variable: "TruthEnergyInEta_3.5_4.0"
+    normalize: true
+  - name: "TruthEnergyInEta_4.0_4.5"
+    variable: "TruthEnergyInEta_4.0_4.5"
+    normalize: true
+  - name: "TruthEnergyInEta_4.5_5.0"
+    variable: "TruthEnergyInEta_4.5_5.0"
+    normalize: true
+
+  - name: "TruthEnergyInEta_0.0_0.5_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_0.0_0.5"
+    normalize: true
+  - name: "TruthEnergyInEta_0.5_1.0_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_0.5_1.0"
+    normalize: true
+  - name: "TruthEnergyInEta_1.0_1.5_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_1.0_1.5"
+    normalize: true
+  - name: "TruthEnergyInEta_1.5_2.0_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_1.5_2.0"
+    normalize: true
+  - name: "TruthEnergyInEta_2.0_2.5_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_2.0_2.5"
+    normalize: true
+  - name: "TruthEnergyInEta_2.5_3.0_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_2.5_3.0"
+    normalize: true
+  - name: "TruthEnergyInEta_3.0_3.5_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_3.0_3.5"
+    normalize: true
+  - name: "TruthEnergyInEta_3.5_4.0_HPU"
+    file_paths: ["/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Topo-cluster-truth-study/Root-files/ClusterEnergies_high_pileup_calorimter_settings_603398.PhPy8EG_AZNLO_Zmumu_r12638.root"]
+    variable: "TruthEnergyInEta_3.5_4.0"
+    normalize: true
+
+  - name: "EMEnergyInEta_0.0_0.5"
+    variable: "EMEnergyInEta_0.0_0.5"
+    normalize: true
+  - name: "EMEnergyInEta_0.5_1.0"
+    variable: "EMEnergyInEta_0.5_1.0"
+    normalize: true
+  - name: "EMEnergyInEta_1.0_1.5"
+    variable: "EMEnergyInEta_1.0_1.5"
+    normalize: true
+  - name: "EMEnergyInEta_1.5_2.0"
+    variable: "EMEnergyInEta_1.5_2.0"
+    normalize: true
+  - name: "EMEnergyInEta_2.0_2.5"
+    variable: "EMEnergyInEta_2.0_2.5"
+    normalize: true
+  - name: "EMEnergyInEta_2.5_3.0"
+    variable: "EMEnergyInEta_2.5_3.0"
+    normalize: true
+  - name: "EMEnergyInEta_3.0_3.5"
+    variable: "EMEnergyInEta_3.0_3.5"
+    normalize: true
+  - name: "EMEnergyInEta_3.5_4.0"
+    variable: "EMEnergyInEta_3.5_4.0"
+    normalize: true
+  - name: "EMEnergyInEta_4.0_4.5"
+    variable: "EMEnergyInEta_4.0_4.5"
+    normalize: true
+  - name: "EMEnergyInEta_4.5_5.0"
+    variable: "EMEnergyInEta_4.5_5.0"
+    normalize: true
+
+  - name: "LCWEnergyInEta_0.0_0.5"
+    variable: "LCWEnergyInEta_0.0_0.5"
+    normalize: true
+  - name: "LCWEnergyInEta_0.5_1.0"
+    variable: "LCWEnergyInEta_0.5_1.0"
+    normalize: true
+  - name: "LCWEnergyInEta_1.0_1.5"
+    variable: "LCWEnergyInEta_1.0_1.5"
+    normalize: true
+  - name: "LCWEnergyInEta_1.5_2.0"
+    variable: "LCWEnergyInEta_1.5_2.0"
+    normalize: true
+  - name: "LCWEnergyInEta_2.0_2.5"
+    variable: "LCWEnergyInEta_2.0_2.5"
+    normalize: true
+  - name: "LCWEnergyInEta_2.5_3.0"
+    variable: "LCWEnergyInEta_2.5_3.0"
+    normalize: true
+  - name: "LCWEnergyInEta_3.0_3.5"
+    variable: "LCWEnergyInEta_3.0_3.5"
+    normalize: true
+  - name: "LCWEnergyInEta_3.5_4.0"
+    variable: "LCWEnergyInEta_3.5_4.0"
+    normalize: true
+  - name: "LCWEnergyInEta_4.0_4.5"
+    variable: "LCWEnergyInEta_4.0_4.5"
+    normalize: true
+  - name: "LCWEnergyInEta_4.5_5.0"
+    variable: "LCWEnergyInEta_4.5_5.0"
+    normalize: true
+
+  - name: "EEmOverETrue"
+    variable: "EEmOverETrue"
+  - name: "ELcwOverETrue"
+    variable: "ELcwOverETrue"
+
+  - name: "TruthEnergyVsEta"
+    variable: "TruthEnergyVsEta"
+
+  - name: "EMEnergyVsEta"
+    variable: "EMEnergyVsEta"
+  - name: "LCWEnergyVsEta"
+    variable: "LCWEnergyVsEta"
+
+
+
+Plot:
+  - name: "TruthEnergyVsEta"
+    samples: [{name: "TruthEnergyVsEta"}]
+    type: "simple_th2"
+    z_range: [0,1500]
+    y_label: "E_{clus,truth} (MeV)"
+
+  - name: "EMEnergyVsEta"
+    samples: [{name: "EMEnergyVsEta"}]
+    type: "simple_th2"
+    z_range: [0,1500]
+    y_label: "E_{clus,EM} (MeV)"
+
+  - name: "LCWEnergyVsEta"
+    samples: [{name: "LCWEnergyVsEta"}]
+    type: "simple_th2"
+    z_range: [0,1500]
+    y_label: "E_{clus,LCW} (MeV)"
+
+  - name: "TrueVsCalibrated"
+    samples:
+      - name: "TrueVsCalibrated"
+    type: "simple_th2"
+  - name: "TrueVsUncalibrated"
+    samples:
+      - name: "TrueVsUncalibrated"
+    type: "simple_th2"
+  - name: "TruthEnergy"
+    samples: [{name: "TruthEnergy", linecolor: 1}]
+    type: "simple_th1"
+
+  - name: "CalibratedEnergy"
+    samples: [{name: "CalibratedEnergy", linecolor: 1, legend: "Calibrated Energy"}]
+    type: "simple_th1"
+    draw_legend: false
+
+  - name: "UncalibratedEnergy"
+    samples: [{name: "UncalibratedEnergy", linecolor: 1}]
+    type: "simple_th1"
+
+  - name: "ClusterEta"
+    samples: [{name: "ClusterEta", linecolor: 1}]
+    type: "simple_th1"
+    x_label: "#eta^{clus}"
+
+  - name: "uTFromPFOsAndCluster"
+    samples: [{name: "uTFromClusters", linecolor: 1},{name: "uTFromPFOs", linecolor: 2}]
+    type: "overlay"
+
+  - name: "CellSignificance"
+    samples:
+      - name: "CellSignificance"
+        linecolor: 1
+    type: "simple_th1"
+
+  - name: "energy_in_eta_regions_0.0_0.5"
+    samples: [{name: "TruthEnergyInEta_0.0_0.5", linecolor: 1}, {name: "EMEnergyInEta_0.0_0.5", linecolor: 2}, {name: "LCWEnergyInEta_0.0_0.5", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:0-0.5)"
+    y_label: "A.U"
+    x_range: [0, 5000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_0.5_1.0"
+    samples: [{name: "TruthEnergyInEta_0.5_1.0", linecolor: 1}, {name: "EMEnergyInEta_0.5_1.0", linecolor: 2}, {name: "LCWEnergyInEta_0.5_1.0", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:0.5-1.0)"
+    y_label: "A.U"
+    x_range: [0, 5000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_1.0_1.5"
+    samples: [{name: "TruthEnergyInEta_1.0_1.5", linecolor: 1}, {name: "EMEnergyInEta_1.0_1.5", linecolor: 2}, {name: "LCWEnergyInEta_1.0_1.5", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:1.0-1.5)"
+    y_label: "A.U"
+    x_range: [0, 5000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_1.5_2.0"
+    samples: [{name: "TruthEnergyInEta_1.5_2.0", linecolor: 1}, {name: "EMEnergyInEta_1.5_2.0", linecolor: 2}, {name: "LCWEnergyInEta_1.5_2.0", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:1.5-2.0)"
+    y_label: "A.U"
+    x_range: [0, 5000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_2.0_2.5"
+    samples: [{name: "TruthEnergyInEta_2.0_2.5", linecolor: 1}, {name: "EMEnergyInEta_2.0_2.5", linecolor: 2}, {name: "LCWEnergyInEta_2.0_2.5", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:2.0-2.5)"
+    y_label: "A.U"
+    x_range: [0, 5000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_2.5_3.0"
+    samples: [{name: "TruthEnergyInEta_2.5_3.0", linecolor: 1}, {name: "EMEnergyInEta_2.5_3.0", linecolor: 2}, {name: "LCWEnergyInEta_2.5_3.0", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:2.5-3.0)"
+    y_label: "A.U"
+    x_range: [0, 15000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_3.0_3.5"
+    samples: [{name: "TruthEnergyInEta_3.0_3.5", linecolor: 1}, {name: "EMEnergyInEta_3.0_3.5", linecolor: 2}, {name: "LCWEnergyInEta_3.0_3.5", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:3.0-3.5)"
+    y_label: "A.U"
+    x_range: [0, 15000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_3.5_4.0"
+    samples: [{name: "TruthEnergyInEta_3.5_4.0", linecolor: 1}, {name: "EMEnergyInEta_3.5_4.0", linecolor: 2}, {name: "LCWEnergyInEta_3.5_4.0", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:3.5-4.0)"
+    y_label: "A.U"
+    x_range: [0, 30000]
+    #setlogy: true
+    #setlogx: true
+
+  - name: "energy_in_eta_regions_4.0_4.5"
+    samples: [{name: "TruthEnergyInEta_4.0_4.5", linecolor: 1}, {name: "EMEnergyInEta_4.0_4.5", linecolor: 2}, {name: "LCWEnergyInEta_4.0_4.5", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:4.0-4.5)"
+    y_label: "A.U"
+    x_range: [0, 30000]
+    #setlogy: true
+
+  - name: "energy_in_eta_regions_4.5_5.0"
+    samples: [{name: "TruthEnergyInEta_4.5_5.0", linecolor: 1}, {name: "EMEnergyInEta_4.5_5.0", linecolor: 2}, {name: "LCWEnergyInEta_4.5_5.0", linecolor: 3}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:4.5-5.0)"
+    y_label: "A.U"
+    x_range: [0, 30000]
+    #setlogy: true
+
+  - name: "energy_in_eta_regions_0.0_0.5_comparison"
+    samples: [{name: "TruthEnergyInEta_0.0_0.5", linecolor: 1, legend: "low PU setting"}, {name: "TruthEnergyInEta_0.0_0.5_HPU", linecolor: 2, legend: "high PU setting"}]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:0-0.5)"
+    y_label: "A.U"
+    x_range: [0, 5000]
+
+  - name: "energy_in_eta_regions_0.5_1.0_comparison"
+    samples: [ { name: "TruthEnergyInEta_0.5_1.0", linecolor: 1 , legend: "low PU setting"}, { name: "TruthEnergyInEta_0.5_1.0_HPU", linecolor: 2, legend: "high PU setting"} ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:0.5-1.0)"
+    y_label: "A.U"
+    x_range: [ 0, 5000 ]
+
+  - name: "energy_in_eta_regions_1.0_1.5_comparison"
+    samples: [ { name: "TruthEnergyInEta_1.0_1.5", linecolor: 1, legend: "low PU setting"}, { name: "TruthEnergyInEta_1.0_1.5_HPU", linecolor: 2, legend: "high PU setting" } ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:1.0-1.5)"
+    y_label: "A.U"
+    x_range: [ 0, 5000 ]
+
+  - name: "energy_in_eta_regions_1.5_2.0_comparison"
+    samples: [ { name: "TruthEnergyInEta_1.5_2.0", linecolor: 1, legend: "low PU setting" }, { name: "TruthEnergyInEta_1.5_2.0_HPU", linecolor: 2, legend: "high PU setting" } ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:1.5-2.0)"
+    y_label: "A.U"
+    x_range: [ 0, 5000 ]
+
+  - name: "energy_in_eta_regions_2.0_2.5_comparison"
+    samples: [ { name: "TruthEnergyInEta_2.0_2.5", linecolor: 1, legend: "low PU setting" }, { name: "TruthEnergyInEta_2.0_2.5_HPU", linecolor: 2, legend: "high PU setting" } ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:2.0-2.5)"
+    y_label: "A.U"
+    x_range: [ 0, 5000 ]
+
+  - name: "energy_in_eta_regions_2.5_3.0_comparison"
+    samples: [ { name: "TruthEnergyInEta_2.5_3.0", linecolor: 1, legend: "low PU setting"}, { name: "TruthEnergyInEta_2.5_3.0_HPU", linecolor: 2, legend: "high PU setting" } ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:2.5-3.0)"
+    y_label: "A.U"
+    x_range: [ 0, 30000 ]
+
+  - name: "energy_in_eta_regions_3.0_3.5_comparison"
+    samples: [ { name: "TruthEnergyInEta_3.0_3.5", linecolor: 1, legend: "low PU setting" }, { name: "TruthEnergyInEta_3.0_3.5_HPU", linecolor: 2, legend: "high PU setting" } ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:3.0-3.5)"
+    y_label: "A.U"
+    x_range: [ 0, 30000 ]
+
+  - name: "energy_in_eta_regions_3.5_4.0_comparison"
+    samples: [ { name: "TruthEnergyInEta_3.5_4.0", linecolor: 1, legend: "low PU setting" }, { name: "TruthEnergyInEta_3.5_4.0_HPU", linecolor: 2, legend: "high PU setting" } ]
+    type: "simple_th1"
+    x_label: "E (MeV)(|#eta|:3.5-4.0)"
+    y_label: "A.U"
+    x_range: [ 0, 30000 ]
+
+  - name: "EOverETrue"
+    samples:
+      - name: "EEmOverETrue"
+        linecolor: 1
+      - name: "ELcwOverETrue"
+        linecolor: 2
+    type: "simple_th1"
+    x_label: "E/E^{True}"
+    y_label: "A.U"

@@ -34,6 +34,10 @@ class canvas:
     def cd(self):
         """cd() to the canvas"""
         self.tcan.cd()
+    
+    def update(self):
+        """Updates the canvas"""
+        self.tcan.Update()
 
     def add_pad(self, p: "pad"):
         """Adds pad to the canvas

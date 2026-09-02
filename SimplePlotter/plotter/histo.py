@@ -1,9 +1,9 @@
 import ROOT
 from ROOT import TH1
+from ROOT import TH2
 from . import thHelper
-from . import loader
 from typing import Optional, Dict, Any, List, Union
-from plotter.plottingbase import Plottable
+from .plottingbase import Plottable
 
 import logging
 
@@ -28,7 +28,6 @@ class histo(Plottable):
         linecolor: int = ROOT.kBlack,
         fillcolor: Optional[int] = 0,
         drawoption: str = "",
-        configPath: str = "",
     ) -> None:
         """
         Arguments:
@@ -43,7 +42,6 @@ class histo(Plottable):
 
         self.linecolor = linecolor
         self.fillcolor = fillcolor
-        self.config = loader.load_config(configPath) if configPath != "" else {}
         self.apply_all_style()
         if drawoption != "":
             self.drawoption = drawoption
@@ -53,9 +51,6 @@ class histo(Plottable):
 
     def apply_all_style(self):
         self.th.SetTitle(self.title)
-
-        if self.config != "":
-            self.style_histo(self.config)
 
     def draw(self, suffix: str = "", drawoption: Optional[str] = None) -> None:
         """TH1.Draw wrapper,
@@ -117,6 +112,17 @@ class histo(Plottable):
 
         hratio.fillcolor = fillcolor
         hratio.linecolor = linecolor
+        # If ratio was computed against the identical histogram (e.g. hist/get_ratio(hist)),
+        # ensure bins where denominator is zero are set to unity (with zero error).
+        try:
+            if self.isTH1 and hasattr(otherHisto, 'th') and self.th is otherHisto.th:
+                for i in range(1, hratio.th.GetNbinsX() + 1):
+                    if otherHisto.th.GetBinContent(i) == 0:
+                        hratio.th.SetBinContent(i, 1.0)
+                        hratio.th.SetBinError(i, 0.0)
+        except Exception:
+            # be robust: if anything fails here, do not crash plotting
+            pass
         return hratio
 
     def style_histo(self, style: Dict[str, Any]) -> None:
@@ -171,3 +177,39 @@ class histo(Plottable):
         h.decorate(self)
 
         return h
+
+# class for th2
+class histo2D(Plottable):
+    def __init__(
+        self,
+        title: str,
+        th: TH2,
+        drawoption: str = "",
+    ) -> None:
+        """
+        Arguments:
+            th (``TH2``): ROOT histogram
+        """
+        self.th = th
+        self.title = title
+        super().__init__()
+
+        if drawoption != "":
+            self.drawoption = drawoption
+
+        self.isTH2 = th.InheritsFrom("TH2")
+
+    def apply_all_style(self):
+        self.th.SetTitle(self.title)
+
+    def draw(self, suffix: str = "", drawoption: Optional[str] = None) -> None:
+        """TH2.Draw wrapper,
+
+        Arguments
+            option (``str``): if want to overwrite self.option
+            suffix (``str``): suffix afteert option, mainly for "same"
+        """
+        if drawoption is None:
+            drawoption = self.drawoption
+
+        self.th.Draw(drawoption + suffix)

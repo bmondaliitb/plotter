@@ -1,0 +1,191 @@
+# Job block defines the output directory and the input file and common plot styles
+Job:
+  job_name: "comperison_uPerp"  # this is a folder name where the plots will be saved
+  output_directory: "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Plots"  # this is the output directory where the plots will be saved
+  #file_path:  &file_path "output_1.root"  # this is the file where the histograms are stored
+  file_paths: # this is a list of files or wildcard patterns where the histograms are stored
+    - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_1_7.root"
+  atlas_label: "Internal"
+
+  # Define common styles
+  CommonStyles: &CommonStyles
+    markerstyle: 0
+    linestyle: 1
+    linewidth: 2
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "hadronic_recoil_setup1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1"
+  - name: "hadronic_recoil_setup1.1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1.1"
+  - name: "hadronic_recoil_setup1.2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1.2"
+  - name: "hadronic_recoil_setup1.3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1.3"
+  - name: "hadronic_recoil_setup1.4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup1.4"
+  - name: "hadronic_recoil_setup2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2"
+  - name: "hadronic_recoil_setup2.1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.1"
+  - name: "hadronic_recoil_setup2.2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.2"
+  - name: "hadronic_recoil_setup2.3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.3"
+  - name: "hadronic_recoil_setup2.4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.4"
+  - name: "hadronic_recoil_setup2.5"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.5"
+  - name: "hadronic_recoil_setup2.6"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.6"
+  - name: "hadronic_recoil_setup2.7"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.7"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup2.8"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.8"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup2.9"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.9"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup2.10"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.10"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup2.11"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup2.11"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3"
+  - name: "hadronic_recoil_setup3.1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3.1"
+  - name: "hadronic_recoil_setup3.2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3.2"
+  - name: "hadronic_recoil_setup3.3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3.3"
+  - name: "hadronic_recoil_setup3.4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3.4"
+  - name: "hadronic_recoil_setup3.5"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup3.5"
+  - name: "hadronic_recoil_setup4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4"
+  - name: "hadronic_recoil_setup4.1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.1"
+  - name: "hadronic_recoil_setup4.2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.2"
+  - name: "hadronic_recoil_setup4.3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.3"
+  - name: "hadronic_recoil_setup4.4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.4"
+  - name: "hadronic_recoil_setup4.5"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.5"
+  - name: "hadronic_recoil_setup4.6"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.6"
+  - name: "hadronic_recoil_setup4.7"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.7"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup4.8"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.8"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup4.9"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.9"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup4.10"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.10"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup4.11"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup4.11"
+    file_paths: 
+      - "/home/bmondal/Storage/HEP/Work/Project-W-Z/Plotter/plotter/run/Rivet-truth-study/Root-files/Rivet_ATLAS_HR_merged_setup_7_11.root"
+  - name: "hadronic_recoil_setup5"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup5"
+  - name: "hadronic_recoil_setup5.1"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup5.1"
+  - name: "hadronic_recoil_setup5.2"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup5.2"
+  - name: "hadronic_recoil_setup5.3"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup5.3"
+  - name: "hadronic_recoil_setup5.4"
+    variable: "Rivet_ATLAS_HR/hadronic_recoil_setup5.4"
+  - name: "p_vs_eta"
+    variable: "Rivet_ATLAS_HR/p_vs_etasetup1"
+    normalize: true
+  - name: "pt_vs_eta"
+    variable: "Rivet_ATLAS_HR/pt_vs_etasetup1"
+    normalize: true
+  - name: "e_vs_eta"
+    variable: "Rivet_ATLAS_HR/e_vs_etasetup1"
+    normalize: true
+  - name: "recoil_pt_setup1"
+    variable: "Rivet_ATLAS_HR/recoil_pt_setup1"
+
+Plot:
+  - name: "hadronic_recoil_setup1"
+    samples: [{name: "hadronic_recoil_setup1", linecolor: 633}, {name: "hadronic_recoil_setup1.1", linecolor: 601}, {name: "hadronic_recoil_setup1.2", linecolor: 418}, {name: "hadronic_recoil_setup1.3", linecolor: 617}, {name: "hadronic_recoil_setup1.4", linecolor: 433}]
+    type: "overlay"
+    x_range: [0, 100]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  - name: "hadronic_recoil_setup2"
+    samples: [{name: "hadronic_recoil_setup2", linecolor: 633}, {name: "hadronic_recoil_setup2.1", linecolor: 601}, {name: "hadronic_recoil_setup2.2", linecolor: 418}, {name: "hadronic_recoil_setup2.3", linecolor: 617}, {name: "hadronic_recoil_setup2.4", linecolor: 433}, {name: "hadronic_recoil_setup2.5", linecolor: 807}, {name: "hadronic_recoil_setup2.6", linecolor: 401}, {name: "hadronic_recoil_setup2.7", linecolor: 864}, {name: "hadronic_recoil_setup2.8", linecolor: 886}, {name: "hadronic_recoil_setup2.9", linecolor: 825}, {name: "hadronic_recoil_setup2.10", linecolor: 906}, {name: "hadronic_recoil_setup2.11", linecolor: 843}]
+    type: "overlay"
+    x_range: [0, 100]
+    y_range_ratio: [0.95, 1.05]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  - name: "hadronic_recoil_setup3"
+    samples: [{name: "hadronic_recoil_setup3", linecolor: 633}, {name: "hadronic_recoil_setup3.1", linecolor: 601}, {name: "hadronic_recoil_setup3.2", linecolor: 418}, {name: "hadronic_recoil_setup3.3", linecolor: 617}, {name: "hadronic_recoil_setup3.4", linecolor: 433}, {name: "hadronic_recoil_setup3.5", linecolor: 807}]
+    type: "overlay"
+    x_range: [0, 100]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  - name: "hadronic_recoil_setup4"
+    samples: [{name: "hadronic_recoil_setup4", linecolor: 633}, {name: "hadronic_recoil_setup4.1", linecolor: 601}, {name: "hadronic_recoil_setup4.2", linecolor: 418}, {name: "hadronic_recoil_setup4.3", linecolor: 617}, {name: "hadronic_recoil_setup4.4", linecolor: 433}, {name: "hadronic_recoil_setup4.5", linecolor: 807}, {name: "hadronic_recoil_setup4.6", linecolor: 401}, {name: "hadronic_recoil_setup4.7", linecolor: 864}, {name: "hadronic_recoil_setup4.8", linecolor: 886}, {name: "hadronic_recoil_setup4.9", linecolor: 825}, {name: "hadronic_recoil_setup4.10", linecolor: 906}, {name: "hadronic_recoil_setup4.11", linecolor: 843}]
+    type: "overlay"
+    x_range: [0, 100]
+    y_range_ratio: [0.95, 1.05]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  - name: "hadronic_recoil_setup5"
+    samples: [{name: "hadronic_recoil_setup5", linecolor: 1}, {name: "hadronic_recoil_setup5.1", linecolor: 2}, {name: "hadronic_recoil_setup5.2", linecolor: 3}, {name: "hadronic_recoil_setup5.3", linecolor: 4}, {name: "hadronic_recoil_setup5.4", linecolor: 6}]
+    type: "overlay"
+    x_range: [0, 100]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"
+
+  - name: "p_vs_etasetup1"
+    samples: [{name: "p_vs_eta", linecolor: 1}]
+    type: "simple_th2"
+
+  - name: "pt_vs_etasetup1"
+    samples: [{name: "pt_vs_eta", linecolor: 1}]
+    type: "simple_th2"
+
+  - name: "e_vs_etasetup1"
+    samples: [{name: "e_vs_eta", linecolor: 1}]
+    type: "simple_th2"
+
+
+  # comparing recoil pt and recoil mag (they should be same)
+  - name: "recoil_pt_vs_recoil_mag"
+    samples: [{name: "recoil_pt_setup1", linecolor: 1}, {name: "hadronic_recoil_setup1", linecolor: 2}]
+    type: "overlay"
+    x_range: [0, 100]
+    y_range_ratio: [0.9, 1.1]
+    x_label: "u_{T} (GeV)"
+    y_label: "A.U"

@@ -38,6 +38,6 @@ jobs:
         # run mypy for type checking
         mypy
     # TODO: implement pytest (will require mock):
-    #- name: Test with pytest
+    #- name: SimplePlotter with pytest
     #  run: |
     #    pytest

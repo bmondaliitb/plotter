@@ -1,0 +1,91 @@
+# Job block defines the overall style and so on
+Job:
+  job_name: "test"  # this is a folder name where the plots will be saved
+  file_path:  &file_path "output.root"  # this is the file where the histograms are stored
+
+# Sample block holds information of individual histograms
+Sample:
+  - name: "uT_cut_6"  # name of the sample
+    variable: "ZeeSelection/uT_finerT_cut6"  # this is the name of the histogram in the ROOT file
+    file_path: *file_path  # this is the file where the histogram is stored
+    #binning:
+  - name: "uT_cut_5"
+    variable: "ZeeSelection/uT_finerT_cut5"
+    file_path: *file_path
+    #binning:
+  - name: "uT_cut_4"
+    variable: "ZeeSelection/uT_finerT_cut5"
+    file_path: *file_path
+  - name: "yll_cut5"
+    variable: "ZeeSelection/yll_cut5"
+    file_path: *file_path
+  - name: "yll_cut6"
+    variable: "ZeeSelection/yll_cut6"
+    file_path: *file_path
+  - name: "mllGeV_cut5"
+    variable: "ZeeSelection/mllGeV_cut5"
+    file_path: *file_path
+  - name: "mllGeV_cut6"
+    variable: "ZeeSelection/mllGeV_cut6"
+    file_path: *file_path
+  - name: "Bias_v_ZpT_Reco_cut6"
+    variable: "ZeeSelection/Bias_v_ZpT_Reco_cut6"
+    file_path: *file_path
+
+
+# Define common styles
+CommonStyles: &CommonStyles
+  markerstyle: 0
+  linestyle: 1
+  linewidth: 2
+
+# Plot block defines how we want to plot the histograms
+Plot:
+  - name: "uT_finer"  # this is the name of the plot
+    samples:
+      - name: "uT_cut_6"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "uT_cut_5"
+        linecolor: 2
+        <<: *CommonStyles
+    type: "overlay"  # overlay, stack, overlay_ratio, stack_ratio
+    x_label: "u_{T} [GeV]"  # x-axis label
+    y_label: "Events"  # y-axis label
+    x_range: [0, 150]  # x-axis range
+
+  - name: "yll"  # this is the name of the plot
+    samples:
+      - name: "yll_cut5"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "yll_cut6"
+        linecolor: 2
+        <<: *CommonStyles
+    type: "overlay"  # overlay, stack, overlay_ratio, stack_ratio
+    x_label: "y_{ll} "  # x-axis label
+    y_label: "Events"  # y-axis label
+    x_range: [ -2.5, 2.5]  # x-axis range
+
+  - name: "mllGeV"
+    samples:
+      - name: "mllGeV_cut5"
+        linecolor: 1
+        <<: *CommonStyles
+      - name: "mllGeV_cut6"
+        linecolor: 2
+        <<: *CommonStyles
+    type: "overlay"
+    x_label: "m_{ll} [GeV]"
+    y_label: "Events"
+    x_range: [0, 115]
+
+  - name: "Bias_v_ZpT_Reco"
+    samples:
+      - name: "Bias_v_ZpT_Reco_cut6"
+        <<: *CommonStyles
+    type: "simple_th2"
+    x_label: "ZpT_Reco [GeV]"
+    y_label: "Bias"
+    x_range: [0, 100]
+    y_range: [-100, 100]
