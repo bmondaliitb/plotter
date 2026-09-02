@@ -184,6 +184,7 @@ class Plotting:
             else:
                 comparison_plot.ratioPad.set_yrange(0.80, 1.20)
             comparison_plot.add_and_plot(histo_list)
+            comparison_plot.mainPad.basis.th.GetYaxis().ChangeLabel(1, -1, -1, 31)
             if plot.y_label_ratio_font_size is not None:
                 comparison_plot.ratioPad.basis.th.GetYaxis().SetTitleSize(plot.y_label_ratio_font_size)
             if plot.x_label_ratio_font_size is not None:
