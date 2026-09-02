@@ -17,10 +17,14 @@ TH2, overlay/ratio, and stored-canvas plots with ATLAS or CMS styling.
 
 Requires ROOT 6 with python3 pyroot.
 
-To install plotter, simply call following in the repository directory:
+Install from the repository directory:
 
-    $ pip3 install --user -e .
+    pip3 install --user -e .
 
 Run a plotting configuration with:
+
+    simple-plotter -c share/config.yaml
+
+Direct execution remains available:
 
     python3 SimplePlotter/main.py -c share/config.yaml
