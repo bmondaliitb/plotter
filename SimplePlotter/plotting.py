@@ -141,6 +141,7 @@ class Plotting:
         for plot in plots_th1_ratio:
             draw_legend = plot.config.get("draw_legend", True)
             comparison_plot = presets.Comparison(plot.name, plot.x_label, plot.y_label,
+                                                 ratioTitle=plot.y_label_ratio,
                                                  draw_legend=draw_legend,
                                                  legend_position=self.legend_position,
                                                  draw_ratio_error_band=plot.draw_errors)
@@ -183,6 +184,10 @@ class Plotting:
             else:
                 comparison_plot.ratioPad.set_yrange(0.80, 1.20)
             comparison_plot.add_and_plot(histo_list)
+            if plot.y_label_ratio_font_size is not None:
+                comparison_plot.ratioPad.basis.th.GetYaxis().SetTitleSize(plot.y_label_ratio_font_size)
+            if plot.x_label_ratio_font_size is not None:
+                comparison_plot.ratioPad.basis.th.GetXaxis().SetTitleSize(plot.x_label_ratio_font_size)
             comparison_plot.canvas.cd()
             # Set X-axis tick interval if specified
             if hasattr(plot, 'x_tick_interval') and plot.x_tick_interval is not None:

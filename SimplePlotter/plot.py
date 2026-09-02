@@ -9,6 +9,9 @@ class Plot:
         self.type = config["type"]
         self.x_label = config.get("x_label", "")
         self.y_label = config.get("y_label", "")
+        self.y_label_ratio = config.get("y_label_ratio", "Ratio")
+        self.y_label_ratio_font_size = config.get("y_label_ratio_font_size")
+        self.x_label_ratio_font_size = config.get("x_label_ratio_font_size")
         self.x_range = config.get("x_range", None)
         self.y_range = config.get("y_range", None)
         self.z_range = config.get("z_range", None)
