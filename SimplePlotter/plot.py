@@ -1,6 +1,3 @@
-
-from sample import Sample
-
 class Plot:
     def __init__(self, config):
         self.config = config

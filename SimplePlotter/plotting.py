@@ -2,11 +2,9 @@ import os
 import logging
 import math
 from array import array
-from sample import Sample
-from plot import Plot
-from plotter import presets
-from plotter import atlas
-from plotter import cmsstyle
+from .sample import Sample
+from .plot import Plot
+from .plotter import atlas, cmsstyle, presets
 
 log = logging.getLogger(__name__)
 
