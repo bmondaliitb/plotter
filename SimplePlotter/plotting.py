@@ -92,6 +92,13 @@ class Plotting:
                     log.warning(f"Sample '{plot_sample['name']}' not found for plot {plot.name}")
                     continue
                 self.apply_style(sample.hist, plot_sample)
+                axis = sample.hist.th.GetXaxis()
+                axis.SetRange(0, 0)
+                valid = [i for i in range(1, sample.hist.th.GetNbinsX() + 1)
+                         if math.isfinite(sample.hist.th.GetBinContent(i))
+                         and math.isfinite(sample.hist.th.GetBinError(i))]
+                if valid:
+                    axis.SetRange(valid[0], valid[-1])
                 histo_list.append(sample.hist)
                 if not plot.x_label:
                     plot.x_label = sample.hist.th.GetXaxis().GetTitle()
